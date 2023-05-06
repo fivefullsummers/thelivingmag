@@ -5,6 +5,8 @@ import EmptyState from "./components/emptyState";
 import ListingCard from "./components/listings/listingCard";
 import { SafeListing } from "./types";
 
+export const dynamic = 'force-dynamic';
+
 interface IHomeProps {
   searchParams: IListingsParams;
 }
