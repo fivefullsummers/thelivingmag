@@ -2,34 +2,39 @@
 
 import Select from "react-select";
 import useCountries from "../../hooks/useCountries";
+import { IState } from "country-state-city";
 
-export type CountrySelectValue = {
-  flag: string;
-  label: string;
-  latlng: number[];
-  value: string;
-  region: string;
+export type StateSelectValue = {
+  value?: string;
+  label?: string;
+  latlng?: number[];
 };
 
-interface ICountrySelectProps {
-  value?: CountrySelectValue;
-  onChange: (value: CountrySelectValue) => void;
+interface IStateSelectProps {
+  countryCode: any;
+  value: StateSelectValue;
+  onChange: (value: StateSelectValue) => void;
 }
 
-const CountrySelect: React.FC<ICountrySelectProps> = ({ value, onChange }) => {
-  const { getAll } = useCountries();
+const StateSelect: React.FC<IStateSelectProps> = ({
+  countryCode,
+  value,
+  onChange,
+}) => {
+  const { getStatesByCountry } = useCountries();
+
   return (
     <div className="flex flex-col gap-8">
       <Select
-        placeholder="Country"
+        placeholder="State"
         isClearable
-        options={getAll()}
+        defaultValue={getStatesByCountry("ZA")}
+        options={getStatesByCountry(countryCode?.value)}
         value={value}
-        onChange={(value) => onChange(value as CountrySelectValue)}
+        onChange={(value) => onChange(value as StateSelectValue)}
         formatOptionLabel={(option: any) => (
           <div className="flex flex-row items-center gap-3">
-            <div>{option.flag}</div>
-            <div>{option.label}</div>
+            <div>{option.name}</div>
           </div>
         )}
         classNames={{
@@ -51,4 +56,4 @@ const CountrySelect: React.FC<ICountrySelectProps> = ({ value, onChange }) => {
   );
 };
 
-export default CountrySelect;
+export default StateSelect;

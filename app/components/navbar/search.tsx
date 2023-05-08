@@ -69,9 +69,9 @@ const Search = () => {
           flex
           flex-row
           items-center
-          justify-between "
+          justify-between"
       >
-        <div className="text-sm font-semibold px-6">{locationLabel}</div>
+        <div className="hidden md:block text-sm font-semibold px-6">{locationLabel}</div>
         <div
           className="
           hidden

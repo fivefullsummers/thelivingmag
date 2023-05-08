@@ -9,15 +9,18 @@ import {
   GiCactus,
   GiCastle,
   GiCaveEntrance,
+  GiClothes,
   GiForestCamp,
   GiIsland,
+  GiLipstick,
   GiWindmill,
 } from "react-icons/gi";
-import { FaSkiing } from "react-icons/fa";
+import { FaCameraRetro, FaSkiing } from "react-icons/fa";
 import { IoDiamond } from "react-icons/io5";
 import { BsSnow } from "react-icons/bs";
 import { MdOutlineVilla } from "react-icons/md";
 import { usePathname, useSearchParams } from "next/navigation";
+import { IoMdWoman } from "react-icons/io";
 
 export const categories = [
   {
@@ -97,6 +100,29 @@ export const categories = [
   },
 ];
 
+export const newCategories = [
+  {
+    label: "Photographer",
+    icon: FaCameraRetro,
+    description: "Check out some photographers!",
+  },
+  {
+    label: "Model",
+    icon: IoMdWoman,
+    description: "Find a model!",
+  },
+  {
+    label: "MUA",
+    icon: GiLipstick,
+    description: "Find a makeup artist!",
+  },
+  {
+    label: "Stylist",
+    icon: GiClothes,
+    description: "Find a stylist!",
+  },
+];
+
 const Categories = () => {
   const params = useSearchParams();
   const category = params?.get("category");
@@ -119,7 +145,7 @@ const Categories = () => {
           overflow-x-auto
         "
       >
-        {categories.map((item) => (
+        {newCategories.map((item) => (
           <CategoryBox
             key={item.label}
             label={item.label}

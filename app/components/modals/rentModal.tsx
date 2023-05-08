@@ -2,11 +2,11 @@
 
 import Modal from "./modal";
 import useRentModal from "../../hooks/useRentModal";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import Heading from "../heading";
 import Counter from "../inputs/counter";
 import CountrySelect from "../inputs/countrySelect";
-import { categories } from "../navbar/categories";
+import { categories, newCategories } from "../navbar/categories";
 import CategoryInput from "../inputs/categoryInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
@@ -15,6 +15,7 @@ import Input from "../inputs/input";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import StateSelect from "../inputs/stateSelect";
 
 const RentModal = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const RentModal = () => {
 
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
+  const [mapLocation, setMapLocation] = useState([0, 0]);
 
   const {
     register,
@@ -42,7 +44,8 @@ const RentModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       category: "",
-      location: null,
+      country: null,
+      state: null,
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
@@ -54,7 +57,8 @@ const RentModal = () => {
   });
 
   const category = watch("category");
-  const location = watch("location");
+  const country = watch("country");
+  const state = watch("state");
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
@@ -65,8 +69,13 @@ const RentModal = () => {
       dynamic(() => import("../map"), {
         ssr: false,
       }),
-    [location]
+    [country, state]
   );
+
+  useEffect(() => {
+    console.log("use effect");
+    mapCenter();
+  }, [country, state]);
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -84,6 +93,23 @@ const RentModal = () => {
     setStep((value) => value + 1);
   };
 
+  const mapCenter = () => {
+    if (state !== "undefined" && state?.latitude && state?.longitude) {
+      setMapLocation(
+        [state.latitude, state.longitude].map((str) => parseFloat(str!))
+      );
+      console.log("location:", mapLocation);
+      return;
+    }
+    if (country?.latlng?.length !== 0) {
+      setMapLocation(country?.latlng);
+      console.log("location:", mapLocation);
+      return;
+    }
+    setMapLocation([0,0]);
+    return;
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (step !== STEPS.PRICE) {
       return onNext();
@@ -91,21 +117,22 @@ const RentModal = () => {
 
     setIsLoading(true);
 
-    axios.post('/api/listings', data)
-    .then(()=> {
-      toast.success('Listing Created!');
-      router.refresh();
-      reset();
-      setStep(STEPS.CATEGORY);
-      rentModal.onClose();
-    })
-    .catch(() => {
-      toast.error("Something went wrong!");
-    })
-    .finally(()=> {
-      setIsLoading(false);
-    })
-  }
+    axios
+      .post("/api/listings", data)
+      .then(() => {
+        toast.success("Listing Created!");
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch(() => {
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
@@ -124,7 +151,7 @@ const RentModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your place?"
+        title="What role did you play on this project?"
         subtitle="Pick a category"
       />
       <div
@@ -137,7 +164,7 @@ const RentModal = () => {
         overflow-y-auto
       "
       >
-        {categories.map((item) => (
+        {newCategories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
               onClick={(category) => {
@@ -161,10 +188,20 @@ const RentModal = () => {
           subtitle="Help guests find you!"
         />
         <CountrySelect
-          value={location}
-          onChange={(value) => setCustomValue("location", value)}
+          value={country}
+          onChange={(value) => {
+            if (!value) {
+              setCustomValue("state", null);
+            }
+            setCustomValue("country", value);
+          }}
         />
-        <Map center={location?.latlng} />
+        <StateSelect
+          countryCode={country}
+          value={state}
+          onChange={(value) => setCustomValue("state", value)}
+        />
+        <Map center={mapLocation} />
       </div>
     );
   }
@@ -222,7 +259,7 @@ const RentModal = () => {
           title="How would you describe your place?"
           subtitle="Short and sweet works best!"
         />
-        <Input 
+        <Input
           id="title"
           label="title"
           disabled={isLoading}
@@ -231,7 +268,7 @@ const RentModal = () => {
           required
         />
         <hr />
-        <Input 
+        <Input
           id="description"
           label="description"
           disabled={isLoading}
@@ -246,11 +283,11 @@ const RentModal = () => {
   if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading 
+        <Heading
           title="Now, set your price"
           subtitle="How much do you charge per night?"
         />
-        <Input 
+        <Input
           id="price"
           label="Price"
           register={register}
@@ -261,12 +298,12 @@ const RentModal = () => {
           required
         />
       </div>
-    )
+    );
   }
 
   return (
     <Modal
-      title="Airbnb your home"
+      title="Post a project"
       isOpen={rentModal.isOpen}
       onClose={rentModal.onClose}
       onSubmit={handleSubmit(onSubmit)}

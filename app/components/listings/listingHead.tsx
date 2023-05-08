@@ -29,7 +29,7 @@ const ListingHead: React.FC<IListingHeadProps> = ({
     <>
       <Heading
         title={title}
-        subtitle={`${location?.region}, ${location?.label}`}
+        subtitle={`city, ${location?.label}`}
       />
       <div className="w-full h-[60vh] overflow-hidden rounded-xl relative">
         <Image

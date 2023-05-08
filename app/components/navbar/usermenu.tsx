@@ -49,7 +49,8 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
           onClick={onRent}
           className="
             hidden
-            md:block
+            md:flex
+            flex-row
             text-sm
             font-semibold
             py-3
@@ -60,7 +61,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             cursor-pointer
           "
         >
-          Airbnb your home
+          Upload
         </div>
         <div
           onClick={toggleOpen}
@@ -107,7 +108,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                 <MenuItem onClick={() => routeThenCloseMenu("/properties")} label="My properties" />
                 <MenuItem
                   onClick={() => rentModal.onOpen()}
-                  label="Airbnb my home"
+                  label="Upload"
                 />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
