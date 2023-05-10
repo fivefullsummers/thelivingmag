@@ -35,7 +35,6 @@ const StateSelect: React.FC<IStateSelectProps> = ({
         formatOptionLabel={(option: any) => (
           <div className="flex flex-row items-center gap-3">
             <div>{option.name}</div>
-            <div>test</div>
           </div>
         )}
         classNames={{

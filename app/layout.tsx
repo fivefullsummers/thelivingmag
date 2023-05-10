@@ -1,5 +1,6 @@
 import "./globals.css";
-import { Nunito } from "next/font/google";
+import { Nunito, Bodoni_Moda } from "next/font/google";
+
 import getCurrentUser from "./actions/getCurrentUser";
 
 import Navbar from "./components/navbar/navbar";
@@ -12,8 +13,8 @@ import SearchModal from "./components/modals/searchModal";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "the living mag",
-  description: "the living mag by Sherwin Hulley",
+  title: "Wouldaposed",
+  description: "Wouldaposed by fivefullsummers",
 };
 
 export default async function RootLayout({

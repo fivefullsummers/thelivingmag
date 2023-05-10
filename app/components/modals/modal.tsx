@@ -117,6 +117,7 @@ const Modal: React.FC<IModalProps> = ({
               flex-col
               w-full
               bg-white
+              overflow-scroll
               outline-none
               focus:outline-none
             "
@@ -141,7 +142,7 @@ const Modal: React.FC<IModalProps> = ({
                     hover:opacity-70
                     transition
                     absolute
-                    left-9
+                    right-9
                   "
                 >
                   <IoMdClose size={18} />

@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import HeartButton from "../heartButton";
 import Button from "../button";
+import Avatar from "../avatar";
 
 interface IListingCardProps {
   data: SafeListing;
@@ -84,30 +85,36 @@ const ListingCard: React.FC<IListingCardProps> = ({
             33vw"
             alt="Listing"
             src={data.imageSrc}
-            className="object-cover h-full w-full group-hover:scale-110 transition ease-in-out"
+            className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
           />
-          <div className="absolute top-3 right-3">
+          <div className="absolute left-5 bottom-5">
+            <Avatar src={currentUser?.image}/>
+          </div>
+          <div className="absolute bottom-5 right-5">
             <HeartButton listingId={data.id} currentUser={currentUser} />
           </div>
         </div>
-        <div className="font-semibold text-lg">
-          city {location?.label}
-        </div>
-        <div className="font-light text-neutral-500">
+        {/* <div className="font-semibold text-lg">
+          {data.title} {location?.label} 
+        </div> */}
+        
+        {/* <div className="font-light text-neutral-500">
           {reservationDate || data.category}
-        </div>
-        <div className="flex flex-row items-center gap-1">
+        </div> */}
+
+        {/* <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">$ {price}</div>
           {!reservation && <div className="font-light">night</div>}
-        </div>
-        {onAction && actionLabel && (
+        </div> */}
+
+        {/* {onAction && actionLabel && (
           <Button
             disabled={disabled}
             small
             label={actionLabel}
             onClick={handleCancel}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

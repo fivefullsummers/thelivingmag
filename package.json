@@ -1,5 +1,5 @@
 {
-  "name": "the-living-mag",
+  "name": "wouldaposed",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -40,6 +40,7 @@
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
     "world-countries": "^4.0.0",
+    "zod": "^3.21.4",
     "zustand": "^4.3.7"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { SafeUser } from "../../types";
 import Container from "../container";
@@ -11,31 +11,37 @@ interface INavBarProps {
   currentUser?: SafeUser | null;
 }
 
-const Navbar: React.FC<INavBarProps> = ({
-  currentUser
-}) => {
+const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
   return (
-  <div className="fixed w-full bg-white z-10 shadow-sm">
-    <div className="py-4 border-b-[1px]">
-      <Container>
-        <div
-          className="
+    <div className="fixed w-full bg-white z-10 shadow-sm">
+      <div className="py-4 border-b-[1px]">
+        <Container>
+          <div className="flex flex-row w-full">
+            <div className="flex justify-start min-w-[100px]">
+              <Logo />
+            </div>
+            <div
+              className="
             flex
             flex-flow
             items-center
-            justify-between
+            justify-end
+            w-full
             gap-3
             md:gap-0
-          ">
-            <Logo />
-            <Search />
-            <UserMenu currentUser={currentUser}/>
-        </div>
-      </Container>
+          "
+            >
+              <div className="">
+                <Search />
+              </div>
+              <UserMenu currentUser={currentUser} />
+            </div>
+          </div>
+        </Container>
+      </div>
+      <Categories />
     </div>
-    <Categories />
-  </div>
   );
-}
+};
 
 export default Navbar;
