@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Nunito, Bodoni_Moda } from "next/font/google";
+import { Nunito } from "next/font/google";
 
 import getCurrentUser from "./actions/getCurrentUser";
 

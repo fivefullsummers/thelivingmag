@@ -1,38 +1,22 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Bodoni_Moda } from "next/font/google";
-
-const secondaryFont = Bodoni_Moda({ 
-  subsets: ["latin"] 
-});
 
 const Logo = () => {
   const router = useRouter();
 
   return (
-      <div
-      onClick={() => router.push('/')}
-      className={`
-        flex
-        items-center
-        justify-center
-        cursor-pointer
-        text-lg
-        tracking-widest
-        text-zinc-950
-        ${secondaryFont.className}        
-      `}>WOULDAPOSED</div>
-    // <Image
-    //   onClick={()=> router.push('/')}
-    //   className="block cursor-pointer"
-    //   alt="logo"
-    //   height={100}
-    //   width={100}
-    //   src="/images/logo.png"
-    // /> 
-  )
-}
+    <div className="w-full h-5 relative">
+      <Image
+        onClick={() => router.push("/")}
+        className="block cursor-pointer"
+        alt="logo"
+        fill
+        src="/images/logo.png"
+      />
+    </div>
+  );
+};
 
 export default Logo;

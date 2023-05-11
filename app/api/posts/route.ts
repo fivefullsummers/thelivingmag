@@ -14,35 +14,21 @@ export async function POST(request: Request) {
 
   const {
     title,
-    description,
-    imageSrc,
-    category,
-    roomCount,
-    bathroomCount,
-    guestCount,
-    country,
-    state,
-    price,
+    caption,
+    images
   } = body;
 
-  const listingData = {
+  const postData = {
     title,
-    description,
-    imageSrc,
-    category,
-    roomCount,
-    bathroomCount,
-    guestCount,
-    countryValue: country.value,
-    statevalue: state.value,
-    price: parseInt(price, 10),
+    caption,
+    images,
     userId: currentUser.id
   }
 
-  const listing = await prisma.post.create({
-    data: listingData
+  const post = await prisma.post.create({
+    data: postData
   });
 
-  return NextResponse.json(listing);
+  return NextResponse.json(post);
 
 }

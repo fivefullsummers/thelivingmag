@@ -20,10 +20,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   favoriteIds String[] @db.ObjectId
+  bio String?
+  instagramLink String?
+  behanceLink String?
+  gender String?
+  rating Int?
 
   accounts Account[]
   listings Listing[]
   reservations Reservation[]
+  posts Post[]
+  role Role @default(READER)
 }
 
 model Account {
@@ -45,6 +52,12 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+enum Role {
+  READER
+  PHOTOGRAPHER
+  MODEL
+}
+
 model Listing {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
@@ -55,7 +68,7 @@ model Listing {
   roomCount Int
   bathroomCount Int
   guestCount Int
-  locationValue String
+  locationValue String?
   userId String @db.ObjectId
   price Int
 
@@ -66,14 +79,13 @@ model Listing {
 model Post {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
-  description String
-  imageSrc String
+  caption String?
+  images String[]
   createdAt DateTime @default(now())
-  category String
-  countryValue String
-  stateValue String
-  cityValue String
+  updatedAt DateTime @updatedAt
   userId String @db.ObjectId
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Reservation {

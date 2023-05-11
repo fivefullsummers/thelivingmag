@@ -17,7 +17,7 @@ const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
       <div className="py-4 border-b-[1px]">
         <Container>
           <div className="flex flex-row w-full">
-            <div className="flex justify-start min-w-[100px]">
+            <div className="flex justify-center items-center min-w-[100px]">
               <Logo />
             </div>
             <div
