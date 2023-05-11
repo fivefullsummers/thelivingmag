@@ -24,7 +24,7 @@ interface IListingInfoProps {
         description: string;
       }
     | undefined;
-  locationValue: string;
+  locationValue: string | null;
 }
 
 const ListingInfo: React.FC<IListingInfoProps> = ({

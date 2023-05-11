@@ -25,7 +25,7 @@ const useCountries = () => {
   const getAll = () => formattedCountries;
   const getAllStates = () => formattedStates;
 
-  const getByValue = (value: string) => {
+  const getByValue = (value: string | null) => {
     return formattedCountries.find((item) => item.value === value);
   };
 
