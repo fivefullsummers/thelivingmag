@@ -25,11 +25,10 @@ const generateSignature = (publicId: string, apiSecret: string) => {
 	return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
 };
 
-
-  const cloudName = "dxoihgtdo";
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const timestamp = new Date().getTime();
-  const apiKey = "852351653749729";
-  const apiSecret = "Pr_SRBxcxWB9wFwRSbN4XdIUL8g";
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
   const signature = generateSHA1(generateSignature(cloudDeleteId as string, apiSecret));
   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
 
