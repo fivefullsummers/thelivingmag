@@ -3,13 +3,14 @@
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { SafeUser } from "../types";
 import useFavorite from "../hooks/useFavorite";
+import React from "react";
 
 interface IHeartButtonProps {
   listingId: string;
   currentUser?: SafeUser | null;
 }
 
-const HeartButton: React.FC<IHeartButtonProps> = ({
+const HeartButton: React.FC<IHeartButtonProps> = React.memo(({
   listingId,
   currentUser,
 }) => {
@@ -44,6 +45,6 @@ const HeartButton: React.FC<IHeartButtonProps> = ({
       />
     </div>
   );
-};
+});
 
 export default HeartButton;
