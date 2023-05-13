@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -13,7 +12,6 @@ interface IUseFavorite {
 }
 
 const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
-  const router = useRouter();
   const loginModal = useLoginModal();
 
   const [hasFavorited, setHasFavorited] = useState(() => {
