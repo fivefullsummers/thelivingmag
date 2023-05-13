@@ -102,25 +102,15 @@ export const categories = [
 
 export const newCategories = [
   {
-    label: "Photographer",
+    label: "Photographers",
     icon: FaCameraRetro,
     description: "Check out some photographers!",
   },
   {
-    label: "Model",
+    label: "Models",
     icon: IoMdWoman,
     description: "Find a model!",
-  },
-  {
-    label: "MUA",
-    icon: GiLipstick,
-    description: "Find a makeup artist!",
-  },
-  {
-    label: "Stylist",
-    icon: GiClothes,
-    description: "Find a stylist!",
-  },
+  }
 ];
 
 const Categories = () => {
@@ -137,11 +127,10 @@ const Categories = () => {
     <Container>
       <div
         className="
-          pt-4
           flex
           flex-row
           items-center
-          justify-between
+          justify-center
           overflow-x-auto
         "
       >

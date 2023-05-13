@@ -2,7 +2,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { IconType } from "react-icons";
-import qs from 'query-string';
+import qs from "query-string";
+import Image from "next/image";
 
 interface ICategoryBoxProps {
   label: string;
@@ -18,7 +19,7 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({
   const router = useRouter();
   const params = useSearchParams();
 
-  const handleClick = useCallback(()=>{
+  const handleClick = useCallback(() => {
     let currentQuery = {};
 
     if (params) {
@@ -27,20 +28,22 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({
 
     const updatedQuery: any = {
       ...currentQuery,
-      category: label
-    }
+      category: label,
+    };
 
-    if (params?.get('category') === label) {
+    if (params?.get("category") === label) {
       delete updatedQuery.category;
     }
 
-    const url = qs.stringifyUrl({
-      url: '/',
-      query: updatedQuery
-    }, { skipNull: true});
+    const url = qs.stringifyUrl(
+      {
+        url: "/",
+        query: updatedQuery,
+      },
+      { skipNull: true }
+    );
 
     router.push(url);
-
   }, [label, params, router]);
 
   return (
@@ -63,9 +66,17 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({
 
       `}
     >
-      <Icon size={26} />
-      <div className="font-medium text-sm">
-        {label}
+      <div className="h-11 relative overflow-hidden rounded-md bg-zinc-800">
+        <div className="bg-gray-800 opacity-40 w-full h-full">
+        <Image
+          src={`/images/${label}.jpg`}
+          alt={label}
+          width={111}
+          height={40}
+          style={{marginTop: "-15px", filter: "grayScale(10%)"}}
+        />
+        </div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium text-sm text-white drop-shadow-sm">{label}</div>
       </div>
     </div>
   );

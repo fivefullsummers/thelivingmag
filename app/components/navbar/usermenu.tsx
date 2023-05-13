@@ -7,11 +7,11 @@ import MenuItem from "./menuitem";
 
 import useRegisterModal from "./../../hooks/useRegisterModal";
 import useLoginModal from "./../../hooks/useLoginModal";
-import useRentModal from "../../hooks/useRentModal";
 
 import { signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
+import usePostModal from "../../hooks/usePostModal";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;
@@ -21,21 +21,21 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
-  const rentModal = useRentModal();
+  const postModal = usePostModal()
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
 
-  const onRent = useCallback(() => {
+  const onPost = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
 
     //Open Rent Modal
-    rentModal.onOpen();
-  }, [currentUser, loginModal, rentModal]);
+    postModal.onOpen();
+  }, [currentUser, loginModal, postModal]);
 
   const routeThenCloseMenu = useCallback((route: string) => {
     router.push(route);
@@ -46,7 +46,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
     <div className="relative">
       <div className="flex flow-row items-center gap-3">
         <div
-          onClick={onRent}
+          onClick={onPost}
           className="
             hidden
             md:flex
@@ -89,7 +89,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+        <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
@@ -107,7 +107,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                 />
                 <MenuItem onClick={() => routeThenCloseMenu("/properties")} label="My properties" />
                 <MenuItem
-                  onClick={() => rentModal.onOpen()}
+                  onClick={() => postModal.onOpen()}
                   label="Upload"
                 />
                 <hr />
