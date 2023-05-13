@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { SafeUser } from "../types";
@@ -14,10 +14,19 @@ interface IUseFavorite {
 const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
   const loginModal = useLoginModal();
 
-  const [hasFavorited, setHasFavorited] = useState(() => {
+  const [hasFavorited, setHasFavorited] = useState<boolean>(() => {
     const list = currentUser?.favoriteIds || [];
-    return list.includes(listingId);
+    const localStorageData =
+      typeof window !== "undefined" ? localStorage.getItem(listingId) : null;
+    return list.includes(listingId) || localStorageData === "true";
   });
+
+  useEffect(() => {
+    const localStorageData = localStorage.getItem(listingId);
+    if (localStorageData !== null) {
+      setHasFavorited(localStorageData === "true");
+    }
+  }, [listingId]);
 
   const toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -28,17 +37,20 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
       }
 
       try {
-        const requestConfig = hasFavorited
-          ? { method: "delete", url: `/api/favorites/${listingId}` }
-          : { method: "post", url: `/api/favorites/${listingId}` };
-
-        await axios(requestConfig);
+        let request;
+        if (hasFavorited) {
+          request = () => axios.delete(`/api/favorites/${listingId}`);
+          localStorage.removeItem(listingId);
+        } else {
+          request = () => axios.post(`/api/favorites/${listingId}`);
+          localStorage.setItem(listingId, "true");
+        }
         setHasFavorited(!hasFavorited);
-        toast.success("Success");
+        await request();
+        console.log(`successfully like post: ${listingId}`);
       } catch (error) {
-        toast.error("Something went wrong");
+        console.error(`error liking post: ${listingId}`);
       }
-
     },
     [listingId, currentUser, hasFavorited, loginModal]
   );
