@@ -47,4 +47,6 @@ const HeartButton: React.FC<IHeartButtonProps> = React.memo(({
   );
 });
 
+HeartButton.displayName = "HeartButton";
+
 export default HeartButton;
