@@ -21,6 +21,7 @@ const PostModal = () => {
   }
 
   const [step, setStep] = useState(STEPS.IMAGES);
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -47,6 +48,15 @@ const PostModal = () => {
       shouldValidate: true,
     });
   };
+
+  useEffect(() => {
+    setUserFolder().then((res) => setUser(res));
+  }, []);
+
+  const setUserFolder = useCallback(async () => {
+    const res = await axios.get("/api/user").catch((err) => console.log(err));
+    return { res };
+  }, []);
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -103,6 +113,7 @@ const PostModal = () => {
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
+        folderName={user?.res?.data?.currentUser?.id}
       />
     </div>
   );

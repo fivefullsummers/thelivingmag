@@ -18,7 +18,6 @@ interface IPostCardProps {
 
 const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
   const router = useRouter();
-  console.log("data in PostCard: ", data);
   return (
     <div
       onClick={() => router.push(`/posts/${data.id}`)}
