@@ -78,7 +78,6 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         onChange([...secureUrls.current]);
 
         deletingIds.delete(cloudDeleteId);
-        return res;
       } catch (err) {
         console.error(err);
       }
