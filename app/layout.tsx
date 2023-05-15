@@ -10,6 +10,7 @@ import LoginModal from "./components/modals/loginModal";
 import RentModal from "./components/modals/rentModal";
 import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
+import ClientOnly from "./components/clientOnly";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -32,8 +33,12 @@ export default async function RootLayout({
         <SearchModal />
         <LoginModal />
         <RegisterModal />
-        <PostModal />
-        <Navbar currentUser={currentUser} />
+        <ClientOnly>
+          <PostModal />
+        </ClientOnly>
+        <ClientOnly>
+          <Navbar currentUser={currentUser} />
+        </ClientOnly>
         <div className="pb-20 pt-20">{children}</div>
       </body>
     </html>
