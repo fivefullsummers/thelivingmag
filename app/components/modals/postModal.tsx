@@ -21,7 +21,7 @@ const PostModal = () => {
   }
 
   const [step, setStep] = useState(STEPS.IMAGES);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<string>("sherwin"); 
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -54,8 +54,13 @@ const PostModal = () => {
   }, []);
 
   const setUserFolder = useCallback(async () => {
-    const res = await axios.get("/api/user").catch((err) => console.log(err));
-    return { res };
+    let folder = "sherwin";
+    const res = await axios
+      .get("/api/user")
+      .then((res) => folder = res.data.currentUser.id)
+      .catch((err) => console.log(err));
+    console.log("folder: ", folder);
+    return folder;
   }, []);
 
   const onBack = () => {
@@ -113,7 +118,7 @@ const PostModal = () => {
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
-        folderName={user?.res?.data?.currentUser?.id}
+        folderName={user}
       />
     </div>
   );
