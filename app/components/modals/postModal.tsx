@@ -118,7 +118,7 @@ const PostModal = () => {
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
-        folderName={user || "sherwin"}
+        folderName={"sherwin"}
       />
     </div>
   );

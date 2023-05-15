@@ -100,7 +100,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
           maxFiles: 5,
           defaultSource: "local",
           sources: ["local", "google_drive"],
-          folder: folderName || "sherwin",
+          folder: "sherwin",
           resourceType: "image",
           theme: "minimal",
         }}
