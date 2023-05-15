@@ -51,7 +51,7 @@ const PostModal = () => {
 
   useEffect(() => {
     setUserFolder().then((res) => setUser(res));
-  }, []);
+  }, [setUser]);
 
   const setUserFolder = useCallback(async () => {
     let folder = "sherwin";
@@ -118,7 +118,7 @@ const PostModal = () => {
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
-        folderName={user}
+        folderName={user || "sherwin"}
       />
     </div>
   );

@@ -97,7 +97,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         onUpload={handleUpload}
         uploadPreset="wghetvwj"
         options={{
-          maxFiles: 5 - secureUrls.current.length,
+          maxFiles: 5,
           defaultSource: "local",
           sources: ["local", "google_drive"],
           folder: folderName || "sherwin",
