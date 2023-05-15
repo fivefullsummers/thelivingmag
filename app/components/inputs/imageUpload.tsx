@@ -3,7 +3,8 @@
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
 
 declare global {
@@ -13,9 +14,14 @@ declare global {
 interface IImageUploadProps {
   onChange: (value: string[]) => void;
   value: string[];
+  folderName?: string;
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
+const ImageUpload: React.FC<IImageUploadProps> = ({
+  onChange,
+  value,
+  folderName,
+}) => {
   const thumbnails = useRef<string[]>([]);
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
@@ -24,7 +30,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
   useEffect(() => {
     thumbnails.current = [];
     uploadedFiles.current = [];
-  }, [secureUrls.current]);
+  }, []);
 
   const handleUpload = useCallback(
     (result: any) => {
@@ -48,31 +54,35 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
     async (index: number) => {
       try {
         const cloudDeleteId = uploadedFiles.current[index];
-        console.log("handle delete: ", cloudDeleteId);
 
         if (deletingIds.has(cloudDeleteId)) {
           return;
-        } 
+        }
 
         deletingIds.add(cloudDeleteId);
 
-        const res = await axios.delete(`/api/cloudDelete/${cloudDeleteId}`);
+        const cloudId = JSON.stringify({ cloudDeleteId: cloudDeleteId });
+        const customConfig = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        await axios
+          .post("/api/cloudDelete", cloudId, customConfig)
+          .catch((err) => console.error(err));
 
-        thumbnails.current.splice(index, 1)
-        secureUrls.current.splice(index, 1)
+        thumbnails.current.splice(index, 1);
+        secureUrls.current.splice(index, 1);
         uploadedFiles.current.splice(index, 1);
 
         onChange([...secureUrls.current]);
 
-        console.log("id was: ", cloudDeleteId);
-
         deletingIds.delete(cloudDeleteId);
-        return res.data;
       } catch (err) {
         console.error(err);
       }
     },
-    [onChange]
+    [onChange, secureUrls.current.length, deletingIds]
   );
 
   return (
@@ -88,7 +98,13 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
         {({ open }) => {
           return (
             <div
-              onClick={() => open?.()}
+              onClick={() => {
+                if (secureUrls.current.length <= 5) {
+                  open?.();
+                } else {
+                  toast.error("maximum files uploaded");
+                }
+              }}
               className="
               relative
               cursor-pointer
@@ -96,7 +112,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
               transition
               border-dashed
               border-2
-              p-20
+              p-2
               border-neutral-300
               flex
               flex-col
@@ -112,16 +128,21 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
           );
         }}
       </CldUploadWidget>
-      {thumbnails.current.length !== 0 && (
-        <div className="h-20 w-full mt-10">
-          <div className="grid grid-cols-5 gap-5 justify-center items-center">
-            {thumbnails.current.map((thumbnail, index) => {
+      {secureUrls.current.length !== 0 && (
+        <div className="h-[500px] w-full mt-5 gap-1 overflow-x-scroll">
+          <div
+            className={`grid grid-cols-5 gap-2 justify-center items-center w-max`}
+          >
+            {secureUrls.current.map((thumbnail, index) => {
               return (
-                <div key={thumbnail}>
+                <div
+                  key={thumbnail}
+                  className="flex flex-col justify-center items-center"
+                >
                   <Image
                     alt={`Thumbnail ${index}`}
-                    height={50}
-                    width={50}
+                    height={200}
+                    width={200}
                     style={{ objectFit: "contain" }}
                     src={thumbnail}
                   />
@@ -130,7 +151,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
                       e.stopPropagation();
                       handleDelete(index);
                     }}
-                    className="m-1 rounded-full bg-rose-500 text-white"
+                    className="m-[-20px] text-center p-2 w-10 h-10 rounded-full bg-rose-500 text-white"
                   >
                     X
                   </button>

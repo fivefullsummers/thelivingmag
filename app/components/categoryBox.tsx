@@ -73,6 +73,7 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({
           alt={label}
           width={111}
           height={40}
+          loading="lazy"
           style={{marginTop: "-15px", filter: "grayScale(10%)"}}
         />
         </div>

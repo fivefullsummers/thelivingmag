@@ -10,6 +10,7 @@ import LoginModal from "./components/modals/loginModal";
 import RentModal from "./components/modals/rentModal";
 import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
+import ClientOnly from "./components/clientOnly";
 
 const font = Nunito({ subsets: ["latin"] });
 

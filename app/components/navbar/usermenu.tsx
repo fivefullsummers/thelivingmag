@@ -40,7 +40,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const routeThenCloseMenu = useCallback((route: string) => {
     router.push(route);
     toggleOpen();
-  }, []);
+  }, [router]);
 
   return (
     <div className="relative">
