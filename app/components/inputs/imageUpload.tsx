@@ -82,6 +82,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
         uploadPreset="wghetvwj"
         options={{
           maxFiles: 5,
+          folder: "sherwin"
         }}
       >
         {({ open }) => {
