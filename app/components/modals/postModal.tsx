@@ -21,7 +21,7 @@ const PostModal = () => {
   }
 
   const [step, setStep] = useState(STEPS.IMAGES);
-  const [user, setUser] = useState<string>("sherwin"); 
+  // const [user, setUser] = useState<string>("sherwin"); 
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -50,18 +50,18 @@ const PostModal = () => {
   };
 
   useEffect(() => {
-    setUserFolder().then((res) => setUser(res));
-  }, [setUser]);
-
-  const setUserFolder = useCallback(async () => {
-    let folder = "sherwin";
-    const res = await axios
-      .get("/api/user")
-      .then((res) => folder = res.data.currentUser.id)
-      .catch((err) => console.log(err));
-    console.log("folder: ", folder);
-    return folder;
+    // setUserFolder().then((res) => setUser(res));
   }, []);
+
+  // const setUserFolder = useCallback(async () => {
+  //   let folder = "sherwin";
+  //   const res = await axios
+  //     .get("/api/user")
+  //     .then((res) => folder = res.data.currentUser.id)
+  //     .catch((err) => console.log(err));
+  //   console.log("folder: ", folder);
+  //   return folder;
+  // }, []);
 
   const onBack = () => {
     setStep((value) => value - 1);

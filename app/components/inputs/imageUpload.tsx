@@ -3,7 +3,7 @@
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
 
@@ -26,13 +26,10 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
   const deletingIds = new Set<string>();
-  const maxUploads = useRef<number>();
 
   useEffect(() => {
     thumbnails.current = [];
     uploadedFiles.current = [];
-    maxUploads.current =
-      secureUrls.current.length <= 5 ? 5 - secureUrls.current.length : 0;
   }, [secureUrls.current]);
 
   const handleUpload = useCallback(
@@ -46,8 +43,6 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         thumbnails.current.push(thumbnailUrl);
         secureUrls.current.push(imageUrl);
         uploadedFiles.current.push(publicId);
-        maxUploads.current =
-          secureUrls.current.length <= 5 ? 5 - secureUrls.current.length : 0;
 
         onChange([...secureUrls.current, imageUrl]);
       }
