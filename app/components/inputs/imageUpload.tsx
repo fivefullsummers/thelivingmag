@@ -30,7 +30,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   useEffect(() => {
     thumbnails.current = [];
     uploadedFiles.current = [];
-  }, [secureUrls.current]);
+  }, []);
 
   const handleUpload = useCallback(
     (result: any) => {
@@ -67,7 +67,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
             "Content-Type": "application/json",
           },
         };
-        const res = await axios
+        await axios
           .post("/api/cloudDelete", cloudId, customConfig)
           .catch((err) => console.error(err));
 
@@ -82,7 +82,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         console.error(err);
       }
     },
-    [onChange, secureUrls.current.length]
+    [onChange, secureUrls.current.length, deletingIds]
   );
 
   return (
