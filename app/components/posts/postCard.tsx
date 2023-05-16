@@ -1,14 +1,10 @@
 "use client";
 
-import { Listing, Post, Reservation } from "@prisma/client";
-import { SafeListing, SafeReservation, SafeUser } from "../../types";
+import { Post} from "@prisma/client";
+import { SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
-import useCountries from "../../hooks/useCountries";
-import { useCallback, useMemo } from "react";
-import { format } from "date-fns";
 import Image from "next/image";
 import HeartButton from "../heartButton";
-import Button from "../button";
 import Avatar from "../avatar";
 
 interface IPostCardProps {
@@ -18,7 +14,6 @@ interface IPostCardProps {
 
 const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
   const router = useRouter();
-  console.log("data in PostCard: ", data);
   return (
     <div
       onClick={() => router.push(`/posts/${data.id}`)}

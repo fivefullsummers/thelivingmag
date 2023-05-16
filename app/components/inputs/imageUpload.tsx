@@ -14,12 +14,14 @@ declare global {
 interface IImageUploadProps {
   onChange: (value: string[]) => void;
   value: string[];
+  folderName: string;
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
+const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName }) => {
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
   const deletingIds = new Set<string>();
+  console.log("folder: ", folderName);
 
   useEffect(() => {
     uploadedFiles.current = [];
@@ -84,7 +86,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
         uploadPreset="wghetvwj"
         options={{
           maxFiles: 5,
-          folder: "sherwin",
+          folder: folderName,
           theme: "minimal",
           defaultSource: "local",
           sources: ["local", "google_drive"],
