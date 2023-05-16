@@ -1,7 +1,7 @@
 "use client";
 
 import Modal from "./modal";
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ImageUpload from "../inputs/imageUpload";
@@ -10,10 +10,22 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
+import { SafeUser } from "../../types";
 
-const PostModal = () => {
+interface IPostModalProps {
+  currentUser?: SafeUser | null;
+}
+
+const PostModal: React.FC<IPostModalProps> = ({
+  currentUser
+}) => {
   const router = useRouter();
   const postModal = usePostModal();
+  let customFolderName = "sherwin";
+  console.log("current user in PostModal", currentUser);
+  if (currentUser) {
+    customFolderName = currentUser.id;
+  }
 
   enum STEPS {
     IMAGES = 1,
@@ -46,6 +58,8 @@ const PostModal = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
+    console.log("value onChange: ", value);
+    console.log("images:", images);
   };
 
   const onBack = () => {
@@ -103,6 +117,7 @@ const PostModal = () => {
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
+        folderName={customFolderName}
       />
     </div>
   );
@@ -145,6 +160,7 @@ const PostModal = () => {
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.IMAGES ? undefined : onBack}
       body={bodyContent}
+      disabled={images.length === 0}
     />
   );
 };
