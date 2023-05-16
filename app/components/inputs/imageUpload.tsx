@@ -17,29 +17,26 @@ interface IImageUploadProps {
 }
 
 const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
-  const thumbnails = useRef<string[]>([]);
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
   const deletingIds = new Set<string>();
 
   useEffect(() => {
-    thumbnails.current = [];
     uploadedFiles.current = [];
   }, [secureUrls.current]);
 
   const handleUpload = useCallback(
     (result: any) => {
       if (result.event === "success") {
-        const thumbnailUrl = result.info.thumbnail_url;
         const imageUrl = result.info.secure_url;
         const publicId = result.info.public_id;
         console.log("result is: ", result.info);
 
-        thumbnails.current.push(thumbnailUrl);
         secureUrls.current.push(imageUrl);
         uploadedFiles.current.push(publicId);
+        let enforceUniqueValues = Array.from(new Set([...secureUrls.current, imageUrl]));
 
-        onChange([...secureUrls.current, imageUrl]);
+        onChange(enforceUniqueValues);
       }
     },
     [onChange, secureUrls]
@@ -49,6 +46,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
     async (index: number) => {
       try {
         const cloudDeleteId = uploadedFiles.current[index];
+        console.log("cloudDeleteId: ", cloudDeleteId)
 
         if (deletingIds.has(cloudDeleteId)) {
           return;
@@ -66,7 +64,6 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
           .post("/api/cloudDelete", cloudId, config)
           .catch((err) => console.error(err));
 
-        thumbnails.current.splice(index, 1);
         secureUrls.current.splice(index, 1);
         uploadedFiles.current.splice(index, 1);
 
@@ -127,7 +124,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
         }}
       </CldUploadWidget>
       {secureUrls.current.length !== 0 && (
-        <div className="h-[500px] w-full mt-10 gap-1 overflow-x-scroll">
+        <div className="max-h-full w-full pb-10 mt-10 gap-1 overflow-x-scroll">
           <div className="grid grid-cols-5 gap-5 justify-center items-center w-max">
             {secureUrls.current.map((thumbnail, index) => {
               return (

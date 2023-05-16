@@ -30,7 +30,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
     >
       <div className="flex flex-col gap-2 w-full">
         <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-          {data.images.map((image, index) => {
+          {data.images.reverse().map((image, index) => {
             return (
               <Image
                 fill

@@ -46,6 +46,8 @@ const PostModal = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
+    console.log("value onChange: ", value);
+    console.log("images:", images);
   };
 
   const onBack = () => {
@@ -145,6 +147,7 @@ const PostModal = () => {
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.IMAGES ? undefined : onBack}
       body={bodyContent}
+      disabled={images.length === 0}
     />
   );
 };

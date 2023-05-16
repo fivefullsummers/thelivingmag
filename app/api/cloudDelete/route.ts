@@ -10,6 +10,8 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { cloudDeleteId } = body;
 
+  console.log("cloud id: ", cloudDeleteId);
+
   if (!cloudDeleteId || typeof cloudDeleteId !== "string") {
     throw new Error("Invalid Id");
   }
