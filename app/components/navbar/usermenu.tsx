@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../avatar";
 import MenuItem from "./menuitem";
@@ -23,6 +23,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const loginModal = useLoginModal();
   const postModal = usePostModal()
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -42,8 +43,21 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
     toggleOpen();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    }
+  }, [menuRef]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <div className="flex flow-row items-center gap-3">
         <div
           onClick={onPost}
