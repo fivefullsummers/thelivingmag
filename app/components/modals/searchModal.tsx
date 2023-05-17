@@ -116,10 +116,6 @@ const SearchModal = () => {
         title="Where do you want to go?"
         subtitle="Find the perfect location."
       />
-      <CountrySelect
-        value={location}
-        onChange={(value) => setLocation(value as CountrySelectValue)}
-      />
       <hr />
       <Map center={location?.latlng} />
     </div>
