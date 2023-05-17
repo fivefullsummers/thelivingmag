@@ -65,6 +65,10 @@ const LoginModal = () => {
         label="Email"
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "invalid email address"
+        }}}
         errors={errors}
         required
       />
@@ -74,6 +78,10 @@ const LoginModal = () => {
         type="password"
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message: "invalid password"
+        }}}
         errors={errors}
         required
       />

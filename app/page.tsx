@@ -1,5 +1,6 @@
 import getCurrentUser from "./actions/getCurrentUser";
 import getListings, { IListingsParams } from "./actions/getListings";
+import getOnlyFirstImageFromPosts from "./actions/getOnlyFirstImageFromPosts";
 import getPosts from "./actions/getPosts";
 import Container from "./components/container";
 import EmptyState from "./components/emptyState";
@@ -15,8 +16,12 @@ interface IHomeProps {
 
 const Home = async ({ searchParams }: IHomeProps) => {
   const listings = await getListings(searchParams);
-  const posts = await getPosts(searchParams);
+  //const posts = await getPosts(searchParams);
+  const posts = await getOnlyFirstImageFromPosts(searchParams);
   const currentUser = await getCurrentUser();
+
+  console.log("first images:", posts);
+
 
   if (listings.length === 0) {
     return <EmptyState showReset />;
@@ -36,14 +41,6 @@ const Home = async ({ searchParams }: IHomeProps) => {
         gap-8 
       "
       >
-        {/* {listings.map((listing: SafeListing) => {
-          return (
-            <ListingCard 
-              currentUser={currentUser}  
-              key={listing.title}
-              data={listing} />
-          );
-        })} */}
         {posts.map((post)=> {
           return (
             <PostCard 
