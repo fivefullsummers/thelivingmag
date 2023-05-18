@@ -3,7 +3,8 @@
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
 
 declare global {
@@ -13,32 +14,31 @@ declare global {
 interface IImageUploadProps {
   onChange: (value: string[]) => void;
   value: string[];
+  folderName: string;
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
-  const thumbnails = useRef<string[]>([]);
+const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName }) => {
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
   const deletingIds = new Set<string>();
+  console.log("folder: ", folderName);
 
   useEffect(() => {
-    thumbnails.current = [];
     uploadedFiles.current = [];
   }, [secureUrls.current]);
 
   const handleUpload = useCallback(
     (result: any) => {
       if (result.event === "success") {
-        const thumbnailUrl = result.info.thumbnail_url;
         const imageUrl = result.info.secure_url;
         const publicId = result.info.public_id;
         console.log("result is: ", result.info);
 
-        thumbnails.current.push(thumbnailUrl);
         secureUrls.current.push(imageUrl);
         uploadedFiles.current.push(publicId);
+        let enforceUniqueValues = Array.from(new Set([...secureUrls.current, imageUrl]));
 
-        onChange([...secureUrls.current, imageUrl]);
+        onChange(enforceUniqueValues);
       }
     },
     [onChange, secureUrls]
@@ -48,31 +48,35 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
     async (index: number) => {
       try {
         const cloudDeleteId = uploadedFiles.current[index];
-        console.log("handle delete: ", cloudDeleteId);
+        console.log("cloudDeleteId: ", cloudDeleteId)
 
         if (deletingIds.has(cloudDeleteId)) {
           return;
-        } 
+        }
 
         deletingIds.add(cloudDeleteId);
+        const cloudId = JSON.stringify({ cloudDeleteId: cloudDeleteId });
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
 
-        const res = await axios.delete(`/api/cloudDelete/${cloudDeleteId}`);
+        await axios
+          .post("/api/cloudDelete", cloudId, config)
+          .catch((err) => console.error(err));
 
-        thumbnails.current.splice(index, 1)
-        secureUrls.current.splice(index, 1)
+        secureUrls.current.splice(index, 1);
         uploadedFiles.current.splice(index, 1);
 
         onChange([...secureUrls.current]);
 
-        console.log("id was: ", cloudDeleteId);
-
         deletingIds.delete(cloudDeleteId);
-        return res.data;
       } catch (err) {
         console.error(err);
       }
     },
-    [onChange]
+    [onChange, secureUrls.current.length]
   );
 
   return (
@@ -82,13 +86,22 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
         uploadPreset="wghetvwj"
         options={{
           maxFiles: 5,
-          folder: "sherwin"
+          folder: folderName,
+          theme: "minimal",
+          defaultSource: "local",
+          sources: ["local", "google_drive"],
         }}
       >
         {({ open }) => {
           return (
             <div
-              onClick={() => open?.()}
+              onClick={() => {
+                if (secureUrls.current.length <= 5) {
+                  open?.();
+                } else {
+                  toast.error("maximum files uploaded");
+                }
+              }}
               className="
               relative
               cursor-pointer
@@ -96,7 +109,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
               transition
               border-dashed
               border-2
-              p-20
+              p-2
               border-neutral-300
               flex
               flex-col
@@ -112,16 +125,18 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
           );
         }}
       </CldUploadWidget>
-      {thumbnails.current.length !== 0 && (
-        <div className="h-20 w-full mt-10">
-          <div className="grid grid-cols-5 gap-5 justify-center items-center">
-            {thumbnails.current.map((thumbnail, index) => {
+      {secureUrls.current.length !== 0 && (
+        <div className="max-h-full w-full pb-10 mt-10 gap-1 overflow-x-scroll">
+          <div className="grid grid-cols-5 gap-5 justify-center items-center w-max">
+            {secureUrls.current.map((thumbnail, index) => {
               return (
-                <div key={thumbnail}>
+                <div key={thumbnail}
+                  className="flex flex-col justify-center items-center"
+                >
                   <Image
                     alt={`Thumbnail ${index}`}
-                    height={50}
-                    width={50}
+                    height={200}
+                    width={200}
                     style={{ objectFit: "contain" }}
                     src={thumbnail}
                   />
@@ -130,7 +145,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value }) => {
                       e.stopPropagation();
                       handleDelete(index);
                     }}
-                    className="m-1 rounded-full bg-rose-500 text-white"
+                    className="m-[-20px] text-center p-2 w-10 h-10 rounded-full bg-rose-500 text-white"
                   >
                     X
                   </button>
