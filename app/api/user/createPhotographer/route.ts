@@ -2,7 +2,7 @@ import getCurrentUser from '@/component/app/actions/getCurrentUser';
 import prisma from '../../../libs/prismadb';
 import { NextResponse } from 'next/server';
 
-export async function UPDATE() {
+export async function PATCH() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
