@@ -1,5 +1,5 @@
 import getCurrentUser from "./actions/getCurrentUser";
-import getListings, { IListingsParams } from "./actions/getListings";
+import { IListingsParams } from "./actions/getListings";
 import getPosts from "./actions/getPosts";
 import Container from "./components/container";
 import EmptyState from "./components/emptyState";
@@ -33,14 +33,6 @@ const Home = async ({ searchParams }: IHomeProps) => {
         gap-8 
       "
       >
-        {/* {listings.map((listing: SafeListing) => {
-          return (
-            <ListingCard 
-              currentUser={currentUser}  
-              key={listing.title}
-              data={listing} />
-          );
-        })} */}
         {posts.map((post)=> {
           return (
             <PostCard 

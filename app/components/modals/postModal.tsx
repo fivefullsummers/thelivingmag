@@ -22,7 +22,6 @@ const PostModal: React.FC<IPostModalProps> = ({
   const router = useRouter();
   const postModal = usePostModal();
   let customFolderName = "sherwin";
-  console.log("current user in PostModal", currentUser);
   if (currentUser) {
     customFolderName = currentUser.id;
   }
@@ -58,8 +57,6 @@ const PostModal: React.FC<IPostModalProps> = ({
       shouldTouch: true,
       shouldValidate: true,
     });
-    console.log("value onChange: ", value);
-    console.log("images:", images);
   };
 
   const onBack = () => {
