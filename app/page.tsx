@@ -3,9 +3,7 @@ import getListings, { IListingsParams } from "./actions/getListings";
 import getPosts from "./actions/getPosts";
 import Container from "./components/container";
 import EmptyState from "./components/emptyState";
-import ListingCard from "./components/listings/listingCard";
 import PostCard from "./components/posts/postCard";
-import { SafeListing } from "./types";
 
 export const dynamic = 'force-dynamic';
 
@@ -14,11 +12,10 @@ interface IHomeProps {
 }
 
 const Home = async ({ searchParams }: IHomeProps) => {
-  const listings = await getListings(searchParams);
   const posts = await getPosts(searchParams);
   const currentUser = await getCurrentUser();
 
-  if (listings.length === 0) {
+  if (posts.length === 0) {
     return <EmptyState showReset />;
   }
   return (
