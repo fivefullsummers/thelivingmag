@@ -108,18 +108,10 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             {currentUser ? (
               <>
                 <MenuItem
-                  onClick={() => routeThenCloseMenu("/trips")}
-                  label="My trips"
-                />
-                <MenuItem
                   onClick={() => routeThenCloseMenu("/favorites")}
                   label="My favorites"
                 />
-                <MenuItem
-                  onClick={() => routeThenCloseMenu("/reservations")}
-                  label="My reservations"
-                />
-                <MenuItem onClick={() => routeThenCloseMenu("/properties")} label="My properties" />
+                <MenuItem onClick={() => routeThenCloseMenu(`/profile/${currentUser.id}`)} label="My Profile" />
                 <MenuItem
                   onClick={() => postModal.onOpen()}
                   label="Upload"

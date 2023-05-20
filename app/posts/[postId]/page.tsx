@@ -7,7 +7,7 @@ interface IParams {
   postId?: string;
 }
 
-const PostPage = async ({ params } : { params: IParams} )=> {
+const PostPage = async ({ params } : { params: IParams})=> {
   const post = await getPostById(params)
   const currentUser = await getCurrentUser();
 

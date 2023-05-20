@@ -35,9 +35,6 @@ const Modal: React.FC<IModalProps> = ({
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
-    if (disabled) {
-      return;
-    }
 
     setShowModal(false);
     setTimeout(() => {
@@ -117,7 +114,7 @@ const Modal: React.FC<IModalProps> = ({
               flex-col
               w-full
               bg-white
-              overflow-scroll
+              overflow-auto
               outline-none
               focus:outline-none
             "
