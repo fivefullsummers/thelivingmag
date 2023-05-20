@@ -1,7 +1,13 @@
 "use client";
 
 import Modal from "./modal";
-import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ImageUpload from "../inputs/imageUpload";
@@ -16,9 +22,7 @@ interface IPostModalProps {
   currentUser?: SafeUser | null;
 }
 
-const PostModal: React.FC<IPostModalProps> = ({
-  currentUser
-}) => {
+const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
   const router = useRouter();
   const postModal = usePostModal();
   let customFolderName = "sherwin";
@@ -33,6 +37,7 @@ const PostModal: React.FC<IPostModalProps> = ({
 
   const [step, setStep] = useState(STEPS.IMAGES);
   const [isLoading, setIsLoading] = useState(false);
+  const [imagesTracker, setImagesTracker] = useState<string[]>([]);
 
   const {
     register,
@@ -43,7 +48,7 @@ const PostModal: React.FC<IPostModalProps> = ({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      images: [""],
+      images: [] as String[],
       title: "",
       caption: "",
     },
@@ -57,6 +62,9 @@ const PostModal: React.FC<IPostModalProps> = ({
       shouldTouch: true,
       shouldValidate: true,
     });
+    if (id === "images") {
+      setImagesTracker([...value]);
+    }
   };
 
   const onBack = () => {
@@ -109,12 +117,13 @@ const PostModal: React.FC<IPostModalProps> = ({
     <div className="flex flex-col gap-8">
       <Heading
         title="Add your work!"
-        subtitle="You can upload up to 5 photos."
+        subtitle={`You can upload up to ${(5 - (imagesTracker.length)) * 1} photo(s).`}
       />
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
         folderName={customFolderName}
+        trackedImages={imagesTracker}
       />
     </div>
   );

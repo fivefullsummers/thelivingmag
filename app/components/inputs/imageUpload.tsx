@@ -1,9 +1,9 @@
 "use client";
 
 import axios from "axios";
-import { CldUploadWidget } from "next-cloudinary";
+import { CldUploadWidget, CldUploadWidgetPropsOptions } from "next-cloudinary";
 import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
 
@@ -15,13 +15,19 @@ interface IImageUploadProps {
   onChange: (value: string[]) => void;
   value: string[];
   folderName: string;
+  trackedImages: string[];
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName }) => {
+const ImageUpload: React.FC<IImageUploadProps> = ({
+  onChange,
+  value,
+  folderName,
+  trackedImages,
+}) => {
   const secureUrls = useRef<string[]>([]);
   const uploadedFiles = useRef<string[]>([]);
   const deletingIds = new Set<string>();
-  console.log("folder: ", folderName);
+  const maxUploads = (5 - trackedImages.length) * 1;
 
   useEffect(() => {
     uploadedFiles.current = [];
@@ -29,80 +35,115 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName 
 
   const handleUpload = useCallback(
     (result: any) => {
-      if (result.event === "success") {
-        const imageUrl = result.info.secure_url;
-        const publicId = result.info.public_id;
-        console.log("result is: ", result.info);
+      if (maxUploads > 0) {
+        console.log("result: ", result);
+        if (result.event === "success") {
+          const imageUrl = result.info.secure_url;
+          const publicId = result.info.public_id;
 
-        secureUrls.current.push(imageUrl);
-        uploadedFiles.current.push(publicId);
-        let enforceUniqueValues = Array.from(new Set([...secureUrls.current, imageUrl]));
+          secureUrls.current.push(imageUrl);
+          uploadedFiles.current.push(publicId);
 
-        onChange(enforceUniqueValues);
+          let enforceUniqueValues = Array.from(
+            new Set([...secureUrls.current, imageUrl])
+          );
+
+          onChange(enforceUniqueValues);
+        }
       }
+      return;
     },
-    [onChange, secureUrls]
+    [onChange, secureUrls.current, maxUploads, trackedImages]
   );
 
   const handleDelete = useCallback(
     async (index: number) => {
-      try {
-        const cloudDeleteId = uploadedFiles.current[index];
-        console.log("cloudDeleteId: ", cloudDeleteId)
+      if (index >= 0) {
+        try {
+          const cloudDeleteId = uploadedFiles.current[index];
 
-        if (deletingIds.has(cloudDeleteId)) {
-          return;
+          if (deletingIds.has(cloudDeleteId)) {
+            return;
+          }
+
+          deletingIds.add(cloudDeleteId);
+          const cloudId = JSON.stringify({ cloudDeleteId: cloudDeleteId });
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          await axios
+            .post("/api/cloudDelete", cloudId, config)
+            .catch((err) => console.error(err));
+
+          secureUrls.current.splice(index, 1);
+          uploadedFiles.current.splice(index, 1);
+
+          onChange([...secureUrls.current]);
+
+          deletingIds.delete(cloudDeleteId);
+        } catch (err) {
+          console.error(err);
         }
-
-        deletingIds.add(cloudDeleteId);
-        const cloudId = JSON.stringify({ cloudDeleteId: cloudDeleteId });
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-
-        await axios
-          .post("/api/cloudDelete", cloudId, config)
-          .catch((err) => console.error(err));
-
-        secureUrls.current.splice(index, 1);
-        uploadedFiles.current.splice(index, 1);
-
-        onChange([...secureUrls.current]);
-
-        deletingIds.delete(cloudDeleteId);
-      } catch (err) {
-        console.error(err);
       }
     },
-    [onChange, secureUrls.current.length]
+    [onChange, trackedImages, secureUrls.current]
   );
+
+  const uploadOptions = {
+    maxFiles: (5 - trackedImages.length) * 1,
+    folder: folderName,
+    theme: "office",
+    defaultSource: "local",
+    sources: ["local"],
+    resourceType: "image",
+    styles: {
+      palette: {
+        window: "#ffffff",
+        sourceBg: "#f4f4f5",
+        windowBorder: "#90a0b3",
+        tabIcon: "#000000",
+        inactiveTabIcon: "#555a5f",
+        menuIcons: "#555a5f",
+        link: "#0433ff",
+        action: "#339933",
+        inProgress: "#0433ff",
+        complete: "#339933",
+        error: "#cc0000",
+        textDark: "#000000",
+        textLight: "#fcfffd",
+      },
+      fonts: {
+        default: null,
+        "sans-serif": {
+          url: null,
+          active: true,
+        },
+      },
+    },
+  } as CldUploadWidgetPropsOptions;
 
   return (
     <div>
-      <CldUploadWidget
-        onUpload={handleUpload}
-        uploadPreset="wghetvwj"
-        options={{
-          maxFiles: 5,
-          folder: folderName,
-          theme: "minimal",
-          defaultSource: "local",
-          sources: ["local", "google_drive"],
-        }}
-      >
-        {({ open }) => {
-          return (
-            <div
-              onClick={() => {
-                if (secureUrls.current.length <= 5) {
-                  open?.();
-                } else {
-                  toast.error("maximum files uploaded");
-                }
-              }}
-              className="
+      {maxUploads > 0 && (
+        <CldUploadWidget
+          onUpload={handleUpload}
+          uploadPreset="wghetvwj"
+          options={uploadOptions}
+        >
+          {({ open }) => {
+            return (
+              <div
+                onClick={() => {
+                  if (maxUploads > 0) {
+                    open?.();
+                  } else {
+                    toast.error("maximum files uploaded");
+                  }
+                }}
+                className="
               relative
               cursor-pointer
               hover:opacity-70
@@ -118,19 +159,21 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName 
               gap-4
               text-neutral-600
               "
-            >
-              <TbPhotoPlus size={50} />
-              <div className="font-semibold text-lg">Click to upload</div>
-            </div>
-          );
-        }}
-      </CldUploadWidget>
-      {secureUrls.current.length !== 0 && (
+              >
+                <TbPhotoPlus size={50} />
+                <div className="font-semibold text-lg">Click to upload</div>
+              </div>
+            );
+          }}
+        </CldUploadWidget>
+      )}
+      {trackedImages.length !== 0 && (
         <div className="max-h-full w-full pb-10 mt-10 gap-1 overflow-x-scroll">
           <div className="grid grid-cols-5 gap-5 justify-center items-center w-max">
-            {secureUrls.current.map((thumbnail, index) => {
+            {trackedImages.map((thumbnail, index) => {
               return (
-                <div key={thumbnail}
+                <div
+                  key={thumbnail}
                   className="flex flex-col justify-center items-center"
                 >
                   <Image
@@ -139,6 +182,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange, value, folderName 
                     width={200}
                     style={{ objectFit: "contain" }}
                     src={thumbnail}
+                    priority
                   />
                   <button
                     onClick={(e) => {

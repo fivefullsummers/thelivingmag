@@ -27,9 +27,26 @@ export default async function getPosts(params: IPostParams) {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        user: {
+          select: {
+            image: true,
+          },
+        },
+      },
     });
 
-    return posts;
+    const postWithUserAvatar = posts.map((post)=> ({
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+      user: {
+        image: post.user.image
+      }
+    }));
+
+
+    return postWithUserAvatar;
   } catch (error: any) {
     throw new Error(error);
   }

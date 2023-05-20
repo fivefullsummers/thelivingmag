@@ -1,14 +1,14 @@
 "use client";
 
 import { Post} from "@prisma/client";
-import { SafeUser } from "../../types";
+import { PostUserAvatar, SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import HeartButton from "../heartButton";
 import Avatar from "../avatar";
 
 interface IPostCardProps {
-  data: Post;
+  data: PostUserAvatar;
   currentUser?: SafeUser | null;
 }
 
@@ -36,7 +36,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
             className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
           />
           <div className="absolute left-5 bottom-5">
-            <Avatar src={currentUser?.image} />
+            <Avatar src={data.user.image} />
           </div>
           <div className="absolute bottom-5 right-5">
             <HeartButton listingId={data.id} currentUser={currentUser} />
