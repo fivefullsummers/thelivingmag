@@ -1,4 +1,5 @@
 import getCurrentUser from "../../actions/getCurrentUser";
+import getPosts from "../../actions/getPosts";
 import getUserById from "../../actions/getUserById";
 import EmptyState from "../../components/emptyState";
 import ProfileClient from "./profileClient";
@@ -9,19 +10,12 @@ interface IParams {
 
 const ProfilePage = async({ params } : { params: IParams}) => {
   const user = await getUserById(params);
-
-  if (!user) {
-    return (
-      <EmptyState
-        title="Welp... that's awkward!"
-        subtitle="This user doesn't exist"
-      />
-    );
-  };
+  const posts = await getPosts(params);
 
   return (
     <ProfileClient 
       user={user}
+      posts={posts}
     />
   );
 }

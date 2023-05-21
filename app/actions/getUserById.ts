@@ -14,12 +14,15 @@ export default async function getUserById(params: IParams) {
       }
     });
 
-    if (!user) {
+    if (user.length === 0) {
       return null;
     }
 
-    return user;
-
+    return {...user[0],
+    createdAt: user[0].createdAt.toISOString(),
+    updatedAt: user[0].updatedAt.toISOString(),
+    emailVerified: user[0].emailVerified?.toISOString() || null
+    }
   } catch (error: any) {
       throw new Error(error);
   }

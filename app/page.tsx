@@ -1,6 +1,5 @@
 import getCurrentUser from "./actions/getCurrentUser";
-import { IListingsParams } from "./actions/getListings";
-import getPosts from "./actions/getPosts";
+import getPosts, { IPostParams } from "./actions/getPosts";
 import Container from "./components/container";
 import EmptyState from "./components/emptyState";
 import PostCard from "./components/posts/postCard";
@@ -8,7 +7,7 @@ import PostCard from "./components/posts/postCard";
 export const dynamic = 'force-dynamic';
 
 interface IHomeProps {
-  searchParams: IListingsParams;
+  searchParams: IPostParams
 }
 
 const Home = async ({ searchParams }: IHomeProps) => {

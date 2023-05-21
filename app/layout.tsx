@@ -24,7 +24,7 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en">
+    <html lang="en" className="antialiased">
       <body className={font.className}>
         <ToasterProvider />
         <SearchModal />
