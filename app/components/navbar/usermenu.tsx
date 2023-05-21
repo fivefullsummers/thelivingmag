@@ -21,7 +21,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
-  const postModal = usePostModal()
+  const postModal = usePostModal();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,8 +39,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   }, [currentUser, loginModal, postModal]);
 
   const routeThenCloseMenu = useCallback((route: string) => {
-    router.push(route);
-    toggleOpen();
+    
   }, []);
 
   useEffect(() => {
@@ -48,12 +47,12 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
+    };
     document.addEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
-    }
+    };
   }, [menuRef]);
 
   return (
@@ -108,22 +107,18 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             {currentUser ? (
               <>
                 <MenuItem
-                  onClick={() => routeThenCloseMenu("/trips")}
-                  label="My trips"
-                />
-                <MenuItem
-                  onClick={() => routeThenCloseMenu("/favorites")}
+                  onClick={() => toggleOpen()}
                   label="My favorites"
+                  route="/favourites"
+                  isLink={true}
                 />
                 <MenuItem
-                  onClick={() => routeThenCloseMenu("/reservations")}
-                  label="My reservations"
+                  onClick={() => toggleOpen()}
+                  label="My Profile"
+                  route={`/profile/${currentUser.id}`}
+                  isLink={true}
                 />
-                <MenuItem onClick={() => routeThenCloseMenu("/properties")} label="My properties" />
-                <MenuItem
-                  onClick={() => postModal.onOpen()}
-                  label="Upload"
-                />
+                <MenuItem onClick={() => postModal.onOpen()} label="Upload" />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
