@@ -104,14 +104,14 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
       return "Create";
     }
     return "Next";
-  }, [step]);
+  }, [step, STEPS.CAPTION]);
 
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.IMAGES) {
       return undefined;
     }
     return "Back";
-  }, [step]);
+  }, [step, STEPS.IMAGES]);
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
