@@ -12,6 +12,7 @@ import { signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
+import useRoleModal from "../../hooks/useRoleModal";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;
@@ -21,26 +22,30 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const roleModal = useRoleModal();
   const postModal = usePostModal();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
-  }, []);
+  }, [setIsOpen]);
 
   const onPost = useCallback(() => {
     if (!currentUser) {
-      return loginModal.onOpen();
+      loginModal.onOpen();
     }
 
-    //Open Rent Modal
-    postModal.onOpen();
-  }, [currentUser, loginModal, postModal]);
+    if (currentUser?.role === "READER") {
+      roleModal.onOpen();
+    } else {
+      postModal.onOpen();
+    }
 
-  const routeThenCloseMenu = useCallback((route: string) => {
-    
-  }, []);
+    //Open Post Modal
+  }, [currentUser, loginModal, postModal, roleModal]);
+
+  const routeThenCloseMenu = useCallback((route: string) => {}, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -101,6 +106,8 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
           </div>
         </div>
       </div>
+      
+
       {isOpen && (
         <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
@@ -118,7 +125,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                   route={`/profile/${currentUser.id}`}
                   isLink={true}
                 />
-                <MenuItem onClick={() => postModal.onOpen()} label="Upload" />
+                <MenuItem onClick={() => onPost()} label="Upload" />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>

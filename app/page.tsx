@@ -4,10 +4,10 @@ import Container from "./components/container";
 import EmptyState from "./components/emptyState";
 import PostCard from "./components/posts/postCard";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface IHomeProps {
-  searchParams: IPostParams
+  searchParams: IPostParams;
 }
 
 const Home = async ({ searchParams }: IHomeProps) => {
@@ -32,18 +32,12 @@ const Home = async ({ searchParams }: IHomeProps) => {
         gap-8 
       "
       >
-        {posts.map((post)=> {
-          return (
-            <PostCard 
-              currentUser={currentUser}
-              key={post.title}
-              data={post}
-            />
-          )
+        {posts.map((post) => {
+          return <PostCard key={post.title} data={post} isVisible={true}/>;
         })}
       </div>
     </Container>
   );
-}
+};
 
 export default Home;

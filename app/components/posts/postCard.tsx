@@ -1,18 +1,17 @@
 "use client";
 
-import { Post} from "@prisma/client";
 import { PostUserAvatar, SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import HeartButton from "../heartButton";
 import Avatar from "../avatar";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface IPostCardProps {
   data: PostUserAvatar;
-  currentUser?: SafeUser | null;
+  isVisible?: boolean;
 }
 
-const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
+const PostCard: React.FC<IPostCardProps> = ({ data, isVisible }) => {
   const router = useRouter();
   return (
     <div
@@ -24,24 +23,38 @@ const PostCard: React.FC<IPostCardProps> = ({ data, currentUser }) => {
       "
     >
       <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-          <Image
-            fill
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw,
+        <AnimatePresence>
+          {isVisible && (
+            <motion.div
+              className="card card-compact bg-base-100 overflow-hidden rounded-md shadow-xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0}}
+            >
+              <div className="aspect-square">
+                <figure>
+                  <Image
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw,
                   (max-width: 1200px) 50vw,
                   33vw"
-            alt={data.title}
-            src={data.images[0]}
-            className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
-          />
-          <div className="absolute left-5 bottom-5">
-            <Avatar src={data.user.image} />
-          </div>
-          <div className="absolute bottom-5 right-5">
-            <HeartButton listingId={data.id} currentUser={currentUser} />
-          </div>
-        </div>
+                    alt={data.title}
+                    src={data.images[0]}
+                    className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
+                  />
+                </figure>
+                <div className="card-body">
+                  <div className="card-actions justify-end">
+                    <div className="absolute left-5 bottom-5">
+                      <Avatar src={data.user.image} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

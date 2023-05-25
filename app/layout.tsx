@@ -9,6 +9,7 @@ import RegisterModal from "./components/modals/registermodal";
 import LoginModal from "./components/modals/loginModal";
 import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
+import RoleModal from "./components/modals/roleModal";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -24,12 +25,13 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en" className="antialiased">
+    <html lang="en" className="antialiased" data-theme="pastel">
       <body className={font.className}>
         <ToasterProvider />
         <SearchModal />
         <LoginModal />
         <RegisterModal />
+        <RoleModal />
         <PostModal currentUser={currentUser}/>
         <Navbar currentUser={currentUser} />
         <div className="pb-20 pt-20">{children}</div>
