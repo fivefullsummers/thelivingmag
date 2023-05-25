@@ -141,7 +141,7 @@ const RoleModal = () => {
                 <div>{selectedRole?.subtitle}</div>
                 <div className="card-actions justify-end">
                   {selectedRole?.badges?.map((badge) => (
-                    <div className="badge badge-outline">{badge}</div>
+                    <div key={badge} className="badge badge-outline">{badge}</div>
                   ))}
                 </div>
               </div>
