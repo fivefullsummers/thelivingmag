@@ -54,9 +54,7 @@ const Search = () => {
       onClick={searchModal.onOpen}
       className="
       border-[1px]
-      sm:w-0
-      lg:w-full
-      md:w-full
+      w-full
       rounded-full
       shadow-sm
       hover:shadow-md
