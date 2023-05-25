@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../avatar";
 import MenuItem from "./menuitem";
 
@@ -13,6 +13,7 @@ import { SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
 import useRoleModal from "../../hooks/useRoleModal";
+import { motion } from "framer-motion";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;
@@ -100,7 +101,10 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             transition
           "
         >
-          <AiOutlineMenu />
+          { !isOpen ? 
+          <AiOutlineMenu /> :
+          <AiOutlineClose /> 
+          }
           <div className="block">
             <Avatar src={currentUser?.image} />
           </div>
@@ -109,7 +113,21 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
       
 
       {isOpen && (
-        <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+        <motion.div 
+          animate={{
+            scale: 1
+          }}
+          initial={{
+            scale: 0.5
+          }}
+          exit={{
+            scale: 0.5
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 700 
+          }}
+          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
@@ -136,7 +154,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
               </>
             )}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
