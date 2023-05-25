@@ -23,6 +23,7 @@ const RoleModal = () => {
   const roleModal = useRoleModal();
   const postModal = usePostModal();
   const [selectedRole, setSelectedRole] = useState<RoleCard>();
+  const [role, setRole] = useState("READER");
 
   const onSubmit = useCallback(async () => {
     try {
@@ -59,14 +60,14 @@ const RoleModal = () => {
     postModal.onOpen();
   }, [roleModal, postModal]);
 
-  const toggleRole = (role: RoleCard) => {
+  const toggleRole = (selectedRole: string) => {
     console.log("role toggle run");
-    if (role?.title === "PHOTOGRAPHER") {
+    if (selectedRole === "PHOTOGRAPHER") {
       console.log("role Photographer toggled");
-      setSelectedRole(role);
-    } else if (role?.title == "MODEL") {
+      setSelectedRole(RoleObject.find((role) => selectedRole === role?.title));
+    } else if (selectedRole== "MODEL") {
       console.log("role model toggled");
-      setSelectedRole(role);
+      setSelectedRole(RoleObject.find((role) => selectedRole === role?.title));
     } else {
       console.log("role null toggled");
       setSelectedRole(null);
@@ -90,21 +91,19 @@ const RoleModal = () => {
     <div className="flex flex-col col-span-1 gap-4">
       <Heading title="Select Your Role" subtitle="What do you do?" />
       <div className="flex justify-center gap-4">
-        <select className="select select-bordered select-lg w-full max-w-xs font-sans">
-          <option
-            key="select-role"
-            defaultValue="Select a role"
-            onClick={() => toggleRole(null)}
-          >
+        <select
+          value={role}
+          onChange={(e) => {
+            setRole(e.target.value);
+            toggleRole(e.target.value);
+          }}
+          className="select select-bordered select-lg w-full max-w-xs font-sans"
+        >
+          <option value="Select a role" defaultValue="Select a role">
             Select a role
           </option>
-          {RoleObject.map((role) => {
-            return (
-              <option key={role?.title} onClick={() => toggleRole(role)}>
-                {role?.title}
-              </option>
-            );
-          })}
+          <option value="PHOTOGRAPHER">Photographer</option>
+          <option value="MODEL">Model</option>
         </select>
       </div>
       <div className="flex justify-center gap-4 pt-8">
