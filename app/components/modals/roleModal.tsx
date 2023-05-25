@@ -16,6 +16,7 @@ export type RoleCard = {
   title: Role;
   subtitle?: string;
   image?: string;
+  badges?: string[];
 } | null;
 
 const RoleModal = () => {
@@ -65,7 +66,7 @@ const RoleModal = () => {
     if (selectedRole === "PHOTOGRAPHER") {
       console.log("role Photographer toggled");
       setSelectedRole(RoleObject.find((role) => selectedRole === role?.title));
-    } else if (selectedRole== "MODEL") {
+    } else if (selectedRole == "MODEL") {
       console.log("role model toggled");
       setSelectedRole(RoleObject.find((role) => selectedRole === role?.title));
     } else {
@@ -77,13 +78,15 @@ const RoleModal = () => {
   const RoleObject: RoleCard[] = [
     {
       title: "PHOTOGRAPHER",
-      subtitle: "I am a Photographer",
+      subtitle: "This will give you a Photographer specific profile",
       image: "/images/photographer_bag.jpg",
+      badges: ["upload posts","rate card"],
     },
     {
       title: "MODEL",
-      subtitle: "I am a Model",
+      subtitle: "This will give you a Model specific profile",
       image: "/images/model_role.jpg",
+      badges: ["upload posts", "measurements", "polaroids", "rate card"],
     },
   ];
 
@@ -136,6 +139,11 @@ const RoleModal = () => {
               <div className="card-body">
                 <div className="card-title">{selectedRole?.title}</div>
                 <div>{selectedRole?.subtitle}</div>
+                <div className="card-actions justify-end">
+                  {selectedRole?.badges?.map((badge) => (
+                    <div className="badge badge-outline">{badge}</div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}

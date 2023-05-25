@@ -34,6 +34,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const onPost = useCallback(() => {
     if (!currentUser) {
       loginModal.onOpen();
+      return;
     }
 
     if (currentUser?.role === "READER") {
