@@ -1,7 +1,13 @@
 "use client";
 
 import Modal from "./modal";
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ImageUpload from "../inputs/imageUpload";
@@ -10,10 +16,19 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
+import { SafeUser } from "../../types";
 
-const PostModal = () => {
+interface IPostModalProps {
+  currentUser?: SafeUser | null;
+}
+
+const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
   const router = useRouter();
   const postModal = usePostModal();
+  let customFolderName = "sherwin";
+  if (currentUser) {
+    customFolderName = currentUser.id;
+  }
 
   enum STEPS {
     IMAGES = 1,
@@ -22,6 +37,7 @@ const PostModal = () => {
 
   const [step, setStep] = useState(STEPS.IMAGES);
   const [isLoading, setIsLoading] = useState(false);
+  const [imagesTracker, setImagesTracker] = useState<string[]>([]);
 
   const {
     register,
@@ -32,7 +48,7 @@ const PostModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      images: [""],
+      images: [] as String[],
       title: "",
       caption: "",
     },
@@ -46,6 +62,9 @@ const PostModal = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
+    if (id === "images") {
+      setImagesTracker([...value]);
+    }
   };
 
   const onBack = () => {
@@ -85,24 +104,26 @@ const PostModal = () => {
       return "Create";
     }
     return "Next";
-  }, [step]);
+  }, [step, STEPS.CAPTION]);
 
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.IMAGES) {
       return undefined;
     }
     return "Back";
-  }, [step]);
+  }, [step, STEPS.IMAGES]);
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
         title="Add your work!"
-        subtitle="You can upload up to 5 photos."
+        subtitle={`You can upload up to ${(5 - (imagesTracker.length)) * 1} photo(s).`}
       />
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
+        folderName={customFolderName}
+        trackedImages={imagesTracker}
       />
     </div>
   );
@@ -145,6 +166,7 @@ const PostModal = () => {
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.IMAGES ? undefined : onBack}
       body={bodyContent}
+      disabled={images.length === 0}
     />
   );
 };
