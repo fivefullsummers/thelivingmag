@@ -1,15 +1,9 @@
 "use client";
 
-import { AiFillGithub } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
 import { useCallback, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./modal";
 import Heading from "../heading";
-import Input from "../inputs/input";
 import { toast } from "react-hot-toast";
-import Button from "../button";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useRoleModal from "../../hooks/useRoleModal";
 import usePostModal from "../../hooks/usePostModal";
@@ -28,42 +22,31 @@ const RoleModal = () => {
   const router = useRouter();
   const roleModal = useRoleModal();
   const postModal = usePostModal();
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<RoleCard>();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      role: "",
-    },
-  });
-
-  const onSubmit = useCallback(async() => {
+  const onSubmit = useCallback(async () => {
     try {
       if (selectedRole?.title === "PHOTOGRAPHER") {
         await axios
-        .patch("/api/user/createPhotographer")
-        .catch((err) => {
-          toast.error("error creating role");
-          return;
-        })
-        .then(() =>{
-          toast.success("created role");
-        });
+          .patch("/api/user/createPhotographer")
+          .catch((err) => {
+            toast.error("error creating role");
+            return;
+          })
+          .then(() => {
+            toast.success("created role");
+          });
       }
       if (selectedRole?.title === "MODEL") {
         await axios
-        .patch("/api/user/createModel")
-        .catch((err) => {
-          toast.error("error creating role");
-          return;
-        })
-        .then(() =>{
-          toast.success("created role");
-        });
+          .patch("/api/user/createModel")
+          .catch((err) => {
+            toast.error("error creating role");
+            return;
+          })
+          .then(() => {
+            toast.success("created role");
+          });
       }
       toggle();
     } catch (error) {
@@ -76,18 +59,19 @@ const RoleModal = () => {
     postModal.onOpen();
   }, [roleModal, postModal]);
 
-  const toggleRole = useCallback(
-    (role: RoleCard) => {
-      if (role?.title === "PHOTOGRAPHER") {
-        setSelectedRole(role);
-      } else if (role?.title == "MODEL") {
-        setSelectedRole(role);
-      } else {
-        setSelectedRole(null);
-      }
-    },
-    [setSelectedRole]
-  );
+  const toggleRole = (role: RoleCard) => {
+    console.log("role toggle run");
+    if (role?.title === "PHOTOGRAPHER") {
+      console.log("role Photographer toggled");
+      setSelectedRole(role);
+    } else if (role?.title == "MODEL") {
+      console.log("role model toggled");
+      setSelectedRole(role);
+    } else {
+      console.log("role null toggled");
+      setSelectedRole(null);
+    }
+  };
 
   const RoleObject: RoleCard[] = [
     {
