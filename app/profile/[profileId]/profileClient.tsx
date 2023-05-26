@@ -4,6 +4,7 @@ import Avatar from "../../components/avatar";
 import Container from "../../components/container";
 import EmptyState from "../../components/emptyState";
 import PostCard from "../../components/posts/postCard";
+import useEditProfileModal from "../../hooks/useEditProfileModal";
 import { PostUserAvatar, SafeUser } from "../../types";
 
 interface IProfileClientProps {
@@ -12,6 +13,7 @@ interface IProfileClientProps {
 }
 
 const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
+  const editProfileModal = useEditProfileModal();
   if (!user) {
     return (
       <EmptyState
@@ -38,7 +40,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
           lg:flex-row
           xl:flex-row
           2xl:flex-row
-          pt-5
+          pt-2
           gap-5
         "
       >
@@ -51,7 +53,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
             2xl:w-[30vw]
             "
         >
-          <div className="card bg-slate-100 shadow-md p-5">
+          <div className="card shadow-md p-5 rounded-md">
             <div className="flex flex-row h-full">
               <div className="flex flex-col h-full justify-center pr-4">
                 <Avatar src={user?.image} size="md" />
@@ -68,7 +70,9 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
               </div>
             </div>
             <div className="card-actions flex justify-end">
-              <button className="btn-xs btn-accent">edit profile</button>
+              <button className="btn-sm btn-secondary rounded-md"
+                onClick={editProfileModal.onOpen}
+              >Edit profile</button>
             </div>
           </div>
         </div>
@@ -85,7 +89,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
           "
         >
           {posts?.map((post) => {
-            return <PostCard key={post.title} data={post} showUser={false} />;
+            return <PostCard key={post.title} data={post} showUser={true} />;
           })}
         </main>
       </div>

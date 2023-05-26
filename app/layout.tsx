@@ -10,6 +10,7 @@ import LoginModal from "./components/modals/loginModal";
 import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
 import RoleModal from "./components/modals/roleModal";
+import EditProfileModal from "./components/modals/editProfileModal";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
         <LoginModal />
         <RegisterModal />
         <RoleModal />
+        <EditProfileModal currentUser={currentUser}/>
         <PostModal currentUser={currentUser}/>
         <Navbar currentUser={currentUser} />
         <div className="pb-20 pt-20">{children}</div>

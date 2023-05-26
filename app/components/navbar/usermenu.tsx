@@ -47,8 +47,6 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
     //Open Post Modal
   }, [currentUser, loginModal, postModal, roleModal]);
 
-  const routeThenCloseMenu = useCallback((route: string) => {}, []);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -99,8 +97,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             cursor-pointer
             hover:shadow-md
             transition
-          "
-        >
+          ">
           { !isOpen ? 
           <AiOutlineMenu /> :
           <AiOutlineClose /> 
@@ -125,20 +122,15 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
           }}
           transition={{
             type: "spring",
-            stiffness: 700 
+            stiffness: 1000,
+            damping: 20
           }}
           className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
                 <MenuItem
-                  onClick={() => toggleOpen()}
-                  label="My favorites"
-                  route="/favourites"
-                  isLink={true}
-                />
-                <MenuItem
-                  onClick={() => toggleOpen()}
+                  onClick={() => toggleOpen}
                   label="My Profile"
                   route={`/profile/${currentUser.id}`}
                   isLink={true}

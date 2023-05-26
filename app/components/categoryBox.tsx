@@ -69,7 +69,9 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({ label, selected }) => {
           </div>
         </div>
       </div>
-      {selected ? (<motion.div className="underline" layoutId="underline"/>) : null }
+      {selected ? (
+        <motion.div className="underline" layoutId="underline" />
+      ) : null}
     </Link>
   );
 };

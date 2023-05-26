@@ -3,7 +3,8 @@ import getUserById from "../../actions/getUserById";
 import ProfileClient from "./profileClient";
 
 interface IParams {
-  userId: string;
+  userId?: string;
+  profileId?: string;
 }
 
 const ProfilePage = async({ params } : { params: IParams}) => {

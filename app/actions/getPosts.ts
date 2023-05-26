@@ -3,6 +3,7 @@ import prisma from "../libs/prismadb";
 
 export interface IPostParams {
   userId?: string;
+  profileId?: string;
   role?: string;
 }
 
@@ -10,13 +11,18 @@ export default async function getPosts(params: IPostParams) {
   try {
     const {
       userId,
-      role
+      role,
+      profileId
     } = params;
 
     let query: Prisma.PostWhereInput = {};
 
     if (userId) {
       query.userId = userId;
+    }
+
+    if (profileId) {
+      query.userId = profileId;
     }
 
     if (role) {
