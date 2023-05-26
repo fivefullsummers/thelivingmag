@@ -3,10 +3,7 @@
 import Modal from "./modal";
 import React, {
   useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback,
+  useMemo
 } from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -15,16 +12,17 @@ import Input from "../inputs/input";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import usePostModal from "../../hooks/usePostModal";
 import { SafeUser } from "../../types";
+import useEditProfileModal from "../../hooks/useEditProfileModal";
+import AvatarUpload from "../inputs/avatarUpload";
 
-interface IPostModalProps {
+interface IEditProfileModalProps {
   currentUser?: SafeUser | null;
 }
 
-const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
+const EditProfileModal: React.FC<IEditProfileModalProps> = ({ currentUser }) => {
   const router = useRouter();
-  const postModal = usePostModal();
+  const editProfileModal = useEditProfileModal();
   let customFolderName = "sherwin";
   if (currentUser) {
     customFolderName = currentUser.id;
@@ -37,7 +35,7 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
 
   const [step, setStep] = useState(STEPS.IMAGES);
   const [isLoading, setIsLoading] = useState(false);
-  const [imagesTracker, setImagesTracker] = useState<string[]>([]);
+  const [imagesTracker, setImagesTracker] = useState<string | undefined>();
 
   const {
     register,
@@ -48,13 +46,13 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      images: [] as String[],
+      image: "",
       title: "",
       caption: "",
     },
   });
 
-  const images = watch("images");
+  const images = watch("image");
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -62,8 +60,9 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
       shouldTouch: true,
       shouldValidate: true,
     });
-    if (id === "images") {
-      setImagesTracker([...value]);
+    if (id === "image") {
+      console.log("avatar image:", value);
+      setImagesTracker(value);
     }
   };
 
@@ -81,22 +80,6 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
     }
 
     setIsLoading(true);
-
-    axios
-      .post("/api/posts", data)
-      .then(() => {
-        toast.success("Post Created!");
-        router.refresh();
-        reset();
-        setStep(STEPS.IMAGES);
-        postModal.onClose();
-      })
-      .catch(() => {
-        toast.error("Something went wrong!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
 
   const actionLabel = useMemo(() => {
@@ -116,14 +99,13 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Add your work!"
-        subtitle={`You can upload up to ${(5 - (imagesTracker.length)) * 1} photo(s).`}
+        title="Upload your avatar"
       />
-      <ImageUpload
+      <AvatarUpload
         value={images}
-        onChange={(value) => setCustomValue("images", value)}
+        onChange={(value) => setCustomValue("image", value)}
         folderName={customFolderName}
-        trackedImages={imagesTracker}
+        trackedImage={imagesTracker}
       />
     </div>
   );
@@ -158,9 +140,9 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
 
   return (
     <Modal
-      title="Post a project"
-      isOpen={postModal.isOpen}
-      onClose={postModal.onClose}
+      title="Edit Profile"
+      isOpen={editProfileModal.isOpen}
+      onClose={editProfileModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
@@ -171,4 +153,4 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
   );
 };
 
-export default PostModal;
+export default EditProfileModal;
