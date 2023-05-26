@@ -1,7 +1,5 @@
-import getCurrentUser from "../../actions/getCurrentUser";
 import getPosts from "../../actions/getPosts";
 import getUserById from "../../actions/getUserById";
-import EmptyState from "../../components/emptyState";
 import ProfileClient from "./profileClient";
 
 interface IParams {

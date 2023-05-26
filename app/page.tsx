@@ -1,4 +1,3 @@
-import getCurrentUser from "./actions/getCurrentUser";
 import getPosts, { IPostParams } from "./actions/getPosts";
 import Container from "./components/container";
 import EmptyState from "./components/emptyState";
@@ -12,7 +11,6 @@ interface IHomeProps {
 
 const Home = async ({ searchParams }: IHomeProps) => {
   const posts = await getPosts(searchParams);
-  const currentUser = await getCurrentUser();
 
   if (posts.length === 0) {
     return <EmptyState showReset />;
@@ -33,7 +31,7 @@ const Home = async ({ searchParams }: IHomeProps) => {
       "
       >
         {posts.map((post) => {
-          return <PostCard key={post.title} data={post} isVisible={true}/>;
+          return <PostCard key={post.title} data={post} showUser={true}/>;
         })}
       </div>
     </Container>
