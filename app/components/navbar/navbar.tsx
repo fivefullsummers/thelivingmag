@@ -6,12 +6,16 @@ import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./usermenu";
 import Categories from "./categories";
+import { useSelectedLayoutSegment } from "next/navigation";
+
 
 interface INavBarProps {
   currentUser?: SafeUser | null;
 }
 
 const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
+  const segment = useSelectedLayoutSegment();
+
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px]">
@@ -31,8 +35,10 @@ const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
             md:gap-0
           "
             >
-              <div className="">
-                <Search />
+              <div className="hidden">
+                {
+                  segment !== "profile" && <Search />
+                }
               </div>
               <UserMenu currentUser={currentUser} />
             </div>
