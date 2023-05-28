@@ -91,7 +91,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         trackedImage={imagesTracker || (currentUser?.image as string)}
       />
       <div className="flex flex-col h-56 w-full gap-4">
-        <div>{currentUser?.name}</div>
         <Input
           id="name"
           label={"Username"}
