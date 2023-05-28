@@ -35,7 +35,7 @@ const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
             md:gap-0
           "
             >
-              <div className="">
+              <div className="hidden">
                 {
                   segment !== "profile" && <Search />
                 }

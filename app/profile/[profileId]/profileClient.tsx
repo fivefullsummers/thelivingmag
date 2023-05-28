@@ -55,13 +55,13 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
         >
           <div className="card shadow-md p-5 rounded-md">
             <div className="flex flex-row h-full">
-              <div className="flex flex-col h-full justify-center pr-4">
+              <div className="flex flex-col h-full min-w-[60%] justify-center pr-4">
                 <Avatar src={user?.image} size="md" />
                 <p className="font-semibold whitespace-nowrap pt-2">
                   {user?.name}
                 </p>
-                <p className="font-light whitespace-nowrap pt-2">
-                  {user?.bio} The Bio will come here
+                <p className="font-light pt-2 w-full">
+                  {user?.bio}
                 </p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
@@ -88,9 +88,14 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
             gap-4 
           "
         >
-          {posts?.map((post) => {
-            return <PostCard key={post.title} data={post} showUser={true} />;
-          })}
+          {
+            posts?.length === 0 ? (<EmptyState title="No Posts" subtitle="Woulda Shoulda Coulda Posted!" />) :
+            posts?.map((post) => {
+              if (post.id) {
+                return (<PostCard key={post.title} data={post} showUser={true} />);
+              }
+            })
+          }
         </main>
       </div>
     </Container>

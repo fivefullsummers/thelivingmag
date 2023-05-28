@@ -71,9 +71,12 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             flex-row
             text-sm
             font-semibold
-            py-3
-            px-4
+            py-2
+            px-3
             rounded-full
+            outline
+            outline-1
+            outline-neutral-300
             hover:bg-neutral-100
             transition
             cursor-pointer

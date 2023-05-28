@@ -1,26 +1,23 @@
 "use client";
 
 import Modal from "./modal";
-import React, {
-  useState,
-  useMemo
-} from "react";
-import Heading from "../heading";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import ImageUpload from "../inputs/imageUpload";
 import Input from "../inputs/input";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { SafeUser } from "../../types";
 import useEditProfileModal from "../../hooks/useEditProfileModal";
 import AvatarUpload from "../inputs/avatarUpload";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface IEditProfileModalProps {
   currentUser?: SafeUser | null;
 }
 
-const EditProfileModal: React.FC<IEditProfileModalProps> = ({ currentUser }) => {
+const EditProfileModal: React.FC<IEditProfileModalProps> = ({
+  currentUser,
+}) => {
   const router = useRouter();
   const editProfileModal = useEditProfileModal();
   let customFolderName = "sherwin";
@@ -28,27 +25,23 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({ currentUser }) => 
     customFolderName = currentUser.id;
   }
 
-  enum STEPS {
-    IMAGES = 1,
-    CAPTION = 2,
-  }
-
-  const [step, setStep] = useState(STEPS.IMAGES);
-  const [isLoading, setIsLoading] = useState(false);
   const [imagesTracker, setImagesTracker] = useState<string | undefined>();
+  const DEFAULT_ROLE = "Select a role";
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      image: "",
-      title: "",
-      caption: "",
+      image: currentUser?.image,
+      name: currentUser?.name,
+      email: currentUser?.email,
+      bio: currentUser?.bio,
+      role: currentUser?.role,
     },
   });
 
@@ -66,77 +59,72 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({ currentUser }) => 
     }
   };
 
-  const onBack = () => {
-    setStep((value) => value - 1);
-  };
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      console.log("data in edit", data);
 
-  const onNext = () => {
-    setStep((value) => value + 1);
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (step !== STEPS.CAPTION) {
-      return onNext();
+      await axios
+        .put("/api/user", data)
+        .then(() => {
+          toast.success("Profile Updated");
+          reset();
+          router.refresh();
+          editProfileModal.onClose();
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+        });
+    } catch (error) {
+      console.log(error);
     }
-
-    setIsLoading(true);
   };
-
-  const actionLabel = useMemo(() => {
-    if (step === STEPS.CAPTION) {
-      return "Create";
-    }
-    return "Next";
-  }, [step, STEPS.CAPTION]);
-
-  const secondaryActionLabel = useMemo(() => {
-    if (step === STEPS.IMAGES) {
-      return undefined;
-    }
-    return "Back";
-  }, [step, STEPS.IMAGES]);
 
   let bodyContent = (
-    <div className="flex flex-col gap-8">
-      <Heading
-        title="Upload your avatar"
-      />
+    <div className="flex flex-col gap-3">
+      <h1 className="font-semibold text-neutral-800 text-center">
+        upload avatar
+      </h1>
       <AvatarUpload
         value={images}
         onChange={(value) => setCustomValue("image", value)}
         folderName={customFolderName}
-        trackedImage={imagesTracker}
+        trackedImage={imagesTracker || (currentUser?.image as string)}
       />
+      <div className="flex flex-col h-56 w-full gap-4">
+        <div>{currentUser?.name}</div>
+        <Input
+          id="name"
+          label={"Username"}
+          register={register}
+          errors={errors}
+          required
+        />
+        <Input
+          id="email"
+          label={"Email"}
+          register={register}
+          disabled={true}
+          errors={errors}
+          required
+        />
+        <Input id="bio" label={"Bio"} register={register} errors={errors} />
+        <div className="flex justify-start">
+          <select
+            {...register("role")}
+            defaultValue={currentUser?.role}
+            className="select select-bordered select-md w-full max-w-xs font-sans rounded-md"
+          >
+            <option value={DEFAULT_ROLE} disabled>
+              Select a role
+            </option>
+            <option value="PHOTOGRAPHER">Photographer</option>
+            <option value="MODEL">Model</option>
+            <option value="READER">Reader</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
-
-  if (step === STEPS.CAPTION) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Write a title and caption for your post!"
-          subtitle="Short and sweet works best!"
-        />
-        <Input
-          id="title"
-          label="title"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
-        <hr />
-        <Input
-          id="caption"
-          label="caption"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
-      </div>
-    );
-  }
 
   return (
     <Modal
@@ -144,11 +132,9 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({ currentUser }) => 
       isOpen={editProfileModal.isOpen}
       onClose={editProfileModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
-      actionLabel={actionLabel}
-      secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step === STEPS.IMAGES ? undefined : onBack}
+      actionLabel="Save"
       body={bodyContent}
-      disabled={images.length === 0}
+      disabled={false}
     />
   );
 };

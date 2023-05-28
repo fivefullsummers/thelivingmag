@@ -39,7 +39,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
               <div className="card-body">
                 <div className="card-actions justify-end">
                   <div className="absolute left-5 bottom-5">
-                    {showUser && <Avatar src={data.user.image} />}
+                    {showUser && <Avatar src={data.user.image} routeTo={`/profile/${data.userId}`} isLink={true}/>}
                   </div>
                 </div>
               </div>

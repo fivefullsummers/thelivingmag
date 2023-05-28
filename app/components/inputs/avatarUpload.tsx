@@ -1,9 +1,7 @@
 "use client";
 
-import axios from "axios";
 import { CldUploadWidget, CldUploadWidgetPropsOptions } from "next-cloudinary";
-import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
 import Avatar from "../avatar";
@@ -25,9 +23,6 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
   folderName,
   trackedImage,
 }) => {
-  const secureUrl = useRef<string>();
-  const uploadedFiles = useRef<string>();
-  const deletingIds = new Set<string>();
   const maxUploads = 1;
 
   const handleUpload = useCallback(
@@ -45,7 +40,7 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
 
   const uploadOptions = {
     maxFiles: 1,
-    folder: folderName,
+    folder: `avatars/${folderName}`,
     multiple: false,
     theme: "office",
     defaultSource: "local",
@@ -78,7 +73,8 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
   } as CldUploadWidgetPropsOptions;
 
   return (
-    <div className="flex flex-row w-full justify-center items-center gap-8">
+    <div className="flex w-full justify-center items-center">
+      <div className="grid grid-cols-2 gap-8 justify-center items-center">
       {maxUploads > 0 && (
         <CldUploadWidget
           onUpload={handleUpload}
@@ -110,7 +106,8 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
               items-center
               text-neutral-600
               rounded-full
-              ">
+              "
+              >
                 <TbPhotoPlus size={20} />
                 <div className="font-semibold text-sm">Upload</div>
               </div>
@@ -118,11 +115,12 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
           }}
         </CldUploadWidget>
       )}
-      {trackedImage && (
-        <div className="overflow-hidden">
-          <Avatar size="md" src={trackedImage} />
-        </div>
+      {trackedImage !== "" ? (
+        <Avatar size="md" src={trackedImage} />
+      ) : (
+        <Avatar size="md" src={""} />
       )}
+      </div>
     </div>
   );
 };

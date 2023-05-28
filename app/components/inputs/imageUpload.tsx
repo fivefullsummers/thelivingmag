@@ -94,7 +94,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
 
   const uploadOptions = {
     maxFiles: (5 - trackedImages.length) * 1,
-    folder: folderName,
+    folder: `posts/${folderName}`,
     theme: "office",
     defaultSource: "local",
     sources: ["local"],
