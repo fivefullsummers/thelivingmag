@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../avatar";
 import MenuItem from "./menuitem";
 
@@ -12,6 +12,8 @@ import { signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
+import useRoleModal from "../../hooks/useRoleModal";
+import { motion } from "framer-motion";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;
@@ -21,39 +23,41 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
-  const postModal = usePostModal()
+  const roleModal = useRoleModal();
+  const postModal = usePostModal();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
-  }, []);
+  }, [setIsOpen]);
 
   const onPost = useCallback(() => {
     if (!currentUser) {
-      return loginModal.onOpen();
+      loginModal.onOpen();
+      return;
     }
 
-    //Open Rent Modal
-    postModal.onOpen();
-  }, [currentUser, loginModal, postModal]);
+    if (currentUser?.role === "READER") {
+      roleModal.onOpen();
+    } else {
+      postModal.onOpen();
+    }
 
-  const routeThenCloseMenu = useCallback((route: string) => {
-    router.push(route);
-    toggleOpen();
-  }, []);
+    //Open Post Modal
+  }, [currentUser, loginModal, postModal, roleModal]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
+    };
     document.addEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
-    }
+    };
   }, [menuRef]);
 
   return (
@@ -67,9 +71,12 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             flex-row
             text-sm
             font-semibold
-            py-3
-            px-4
+            py-2
+            px-3
             rounded-full
+            outline
+            outline-1
+            outline-neutral-300
             hover:bg-neutral-100
             transition
             cursor-pointer
@@ -80,9 +87,8 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
         <div
           onClick={toggleOpen}
           className="
-            p-4
-            md:py-1
-            md:px-2
+            py-1
+            px-2
             border-[1px]
             border-neutral-200
             flex
@@ -94,36 +100,45 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             cursor-pointer
             hover:shadow-md
             transition
-          "
-        >
-          <AiOutlineMenu />
-          <div className="hidden md:block">
+          ">
+          { !isOpen ? 
+          <AiOutlineMenu /> :
+          <AiOutlineClose /> 
+          }
+          <div className="block">
             <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
+      
+
       {isOpen && (
-        <div className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+        <motion.div 
+          animate={{
+            scale: 1
+          }}
+          initial={{
+            scale: 0.5
+          }}
+          exit={{
+            scale: 0.5
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 1000,
+            damping: 20
+          }}
+          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
                 <MenuItem
-                  onClick={() => routeThenCloseMenu("/trips")}
-                  label="My trips"
+                  onClick={() => toggleOpen}
+                  label="My Profile"
+                  route={`/profile/${currentUser.id}`}
+                  isLink={true}
                 />
-                <MenuItem
-                  onClick={() => routeThenCloseMenu("/favorites")}
-                  label="My favorites"
-                />
-                <MenuItem
-                  onClick={() => routeThenCloseMenu("/reservations")}
-                  label="My reservations"
-                />
-                <MenuItem onClick={() => routeThenCloseMenu("/properties")} label="My properties" />
-                <MenuItem
-                  onClick={() => postModal.onOpen()}
-                  label="Upload"
-                />
+                <MenuItem onClick={() => onPost()} label="Upload" />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
@@ -134,7 +149,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
               </>
             )}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
