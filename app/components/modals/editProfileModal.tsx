@@ -123,6 +123,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           errors={errors}
           required
         />
+        <Input id="bio" label={"Bio"} register={register} errors={errors} />
         <Input id="instagramLink" label={"Instagram username"} register={register} errors={errors} />
         <Input id="behanceLink" label={"Behance username"} register={register} errors={errors} />
         <div className="flex justify-start gap-4">
