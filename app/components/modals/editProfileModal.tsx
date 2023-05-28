@@ -80,7 +80,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
   };
 
   let bodyContent = (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 overflow-y-scroll">
       <h1 className="font-semibold text-neutral-800 text-center">
         upload avatar
       </h1>
