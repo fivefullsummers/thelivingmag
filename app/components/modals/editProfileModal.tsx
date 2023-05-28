@@ -42,10 +42,17 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
       email: currentUser?.email,
       bio: currentUser?.bio,
       role: currentUser?.role,
+      gender: currentUser?.gender || "Select gender",
+      instagramLink: currentUser?.instagramLink,
+      behanceLink: currentUser?.behanceLink
     },
   });
 
   const images = watch("image");
+
+  useEffect(() => {
+    console.log("modal ran");
+  }, [router])
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -57,6 +64,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
       console.log("avatar image:", value);
       setImagesTracker(value);
     }
+    console.log("id: %s values: ", id, value);
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -67,7 +75,16 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         .put("/api/user", data)
         .then(() => {
           toast.success("Profile Updated");
-          reset();
+          reset({
+            image: data?.image,
+            name: data?.name,
+            email: data?.email,
+            bio: data?.bio,
+            role: data?.role,
+            gender: data?.gender,
+            instagramLink: data?.instagramLink,
+            behanceLink: data?.behanceLink
+          });
           router.refresh();
           editProfileModal.onClose();
         })
@@ -80,7 +97,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
   };
 
   let bodyContent = (
-    <div className="flex flex-col gap-3 overflow-y-scroll">
+    <div className="flex flex-col gap-3">
       <h1 className="font-semibold text-neutral-800 text-center">
         upload avatar
       </h1>
@@ -90,7 +107,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         folderName={customFolderName}
         trackedImage={imagesTracker || (currentUser?.image as string)}
       />
-      <div className="flex flex-col h-56 w-full gap-4">
+      <div className="flex flex-col h-full w-full gap-4">
         <Input
           id="name"
           label={"Username"}
@@ -106,12 +123,13 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           errors={errors}
           required
         />
-        <Input id="bio" label={"Bio"} register={register} errors={errors} />
-        <div className="flex justify-start">
+        <Input id="instagramLink" label={"Instagram username"} register={register} errors={errors} />
+        <Input id="behanceLink" label={"Behance username"} register={register} errors={errors} />
+        <div className="flex justify-start gap-4">
           <select
             {...register("role")}
             defaultValue={currentUser?.role}
-            className="select select-bordered select-md w-full max-w-xs font-sans rounded-md"
+            className="select select-bordered select-sm w-[45%] max-w-xs font-sans rounded-md"
           >
             <option value={DEFAULT_ROLE} disabled>
               Select a role
@@ -119,6 +137,17 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
             <option value="PHOTOGRAPHER">Photographer</option>
             <option value="MODEL">Model</option>
             <option value="READER">Reader</option>
+          </select>
+          <select
+            {...register("gender")}
+            defaultValue={currentUser?.gender as string}
+            className="select select-bordered select-sm w-[45%] max-w-xs font-sans rounded-md"
+          >
+            <option value="Select gender" disabled>
+              Select a gender
+            </option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </select>
         </div>
       </div>

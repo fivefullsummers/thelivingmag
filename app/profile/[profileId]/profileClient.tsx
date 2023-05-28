@@ -1,11 +1,15 @@
 "use client";
 
+import { TbGenderFemale, TbGenderMale } from "react-icons/tb";
 import Avatar from "../../components/avatar";
 import Container from "../../components/container";
 import EmptyState from "../../components/emptyState";
 import PostCard from "../../components/posts/postCard";
 import useEditProfileModal from "../../hooks/useEditProfileModal";
 import { PostUserAvatar, SafeUser } from "../../types";
+import { AiFillInstagram } from "react-icons/ai";
+import { FaBehanceSquare } from "react-icons/fa";
+import Link from "next/link";
 
 interface IProfileClientProps {
   user: SafeUser | null;
@@ -60,19 +64,52 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
                 <p className="font-semibold whitespace-nowrap pt-2">
                   {user?.name}
                 </p>
-                <p className="font-light pt-2 w-full">
-                  {user?.bio}
-                </p>
+                <p className="font-light pt-2 w-full">{user?.bio}</p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
-                <p>{posts.length} Posts</p>
-                <p>{user?.role}</p>
+                <p>
+                  <span className="font-semibold">{posts.length}</span> Posts
+                </p>
+                <div className="flex flex-row gap-1 items-center pt-1">
+                  <p className="text-sm">{user?.role.toLowerCase()}</p>
+                  <span>
+                    {user?.gender === "FEMALE" && <TbGenderFemale />}
+                    {user?.gender === "MALE" && <TbGenderMale />}
+                  </span>
+                </div>
+                <div className="flex flex-row gap-2 pt-2">
+                  {user?.instagramLink && (
+                    <div>
+                      <a
+                        target="_blank"
+                        href={`https://Instagram.com/${user?.instagramLink}`}
+                        rel="noopener noreferrer"
+                      >
+                        <AiFillInstagram size={35} />
+                      </a>
+                    </div>
+                  )}
+                  {user?.behanceLink && (
+                    <div>
+                      <a
+                        target="_blank"
+                        href={`https://behance.com/${user?.behanceLink}`}
+                        rel="noopener noreferrer"
+                      >
+                        <FaBehanceSquare size={35} />
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className="card-actions flex justify-end">
-              <button className="btn-sm btn-secondary rounded-md"
+              <button
+                className="btn-sm btn-primary rounded-md"
                 onClick={editProfileModal.onOpen}
-              >Edit profile</button>
+              >
+                Edit profile
+              </button>
             </div>
           </div>
         </div>
@@ -88,14 +125,20 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
             gap-4 
           "
         >
-          {
-            posts?.length === 0 ? (<EmptyState title="No Posts" subtitle="Woulda Shoulda Coulda Posted!" />) :
+          {posts?.length === 0 ? (
+            <EmptyState
+              title="No Posts"
+              subtitle="Woulda Shoulda Coulda Posted!"
+            />
+          ) : (
             posts?.map((post) => {
               if (post.id) {
-                return (<PostCard key={post.title} data={post} showUser={true} />);
+                return (
+                  <PostCard key={post.title} data={post} showUser={true} />
+                );
               }
             })
-          }
+          )}
         </main>
       </div>
     </Container>
