@@ -1,19 +1,36 @@
+import { Prisma, Role } from "@prisma/client";
 import prisma from "../libs/prismadb";
 
 export interface IPostParams {
   userId?: string;
+  profileId?: string;
+  role?: string;
 }
 
 export default async function getPosts(params: IPostParams) {
   try {
     const {
-      userId
+      userId,
+      role,
+      profileId
     } = params;
 
-    let query: any = {};
+    let query: Prisma.PostWhereInput = {};
 
     if (userId) {
       query.userId = userId;
+    }
+
+    if (profileId) {
+      query.userId = profileId;
+    }
+
+    if (role) {
+      query.user = {
+        role: {
+          equals: role.toUpperCase() as Role
+        }
+      }
     }
 
     const posts = await prisma.post.findMany({
@@ -21,9 +38,28 @@ export default async function getPosts(params: IPostParams) {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        user: {
+          select: {
+            image: true,
+            role: true,
+          },
+        },
+      },
     });
 
-    return posts;
+    const postWithUserAvatar = posts.map((post)=> ({
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+      user: {
+        image: post.user.image,
+        role: post.user.role
+      }
+    }));
+
+
+    return postWithUserAvatar;
   } catch (error: any) {
     throw new Error(error);
   }
