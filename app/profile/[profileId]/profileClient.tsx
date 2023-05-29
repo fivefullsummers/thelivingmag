@@ -71,7 +71,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
                 </p>
                 <p 
                   dangerouslySetInnerHTML={{__html: replaceWithBr()}}
-                  className="font-light pt-2 w-full"></p>
+                  className="font-light text-neutral-900 pt-2 w-full text-sm"></p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
                 <p>
