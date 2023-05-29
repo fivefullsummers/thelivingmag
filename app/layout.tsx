@@ -11,12 +11,13 @@ import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
 import RoleModal from "./components/modals/roleModal";
 import EditProfileModal from "./components/modals/editProfileModal";
+import Head from "next/head";
 
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Wouldaposed",
-  description: "Wouldaposed by fivefullsummers",
+  description: "Wouldaposed by fivefullsummers"
 };
 
 export default async function RootLayout({
@@ -27,6 +28,9 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
   return (
     <html lang="en" className="antialiased" data-theme="pastel">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+      </Head>
       <body className={font.className}>
         <ToasterProvider />
         <SearchModal />
