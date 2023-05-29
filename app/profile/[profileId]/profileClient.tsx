@@ -10,6 +10,7 @@ import { PostUserAvatar, SafeUser } from "../../types";
 import { AiFillInstagram } from "react-icons/ai";
 import { FaBehanceSquare } from "react-icons/fa";
 import Link from "next/link";
+import { useCallback } from "react";
 
 interface IProfileClientProps {
   user: SafeUser | null;
@@ -32,6 +33,10 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
       <EmptyState title="No Posts" subtitle="Woulda Shoulda Coulda Posted!" />
     );
   }
+
+  const replaceWithBr = useCallback(() => {
+    return user?.bio?.replace(/\n/g, "<br>") as TrustedHTML;
+  }, [user?.bio]);
 
   console.log("user: ", user);
   return (
@@ -64,7 +69,9 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
                 <p className="font-semibold whitespace-nowrap pt-2">
                   {user?.name}
                 </p>
-                <p className="font-light pt-2 w-full">{user?.bio}</p>
+                <p 
+                  dangerouslySetInnerHTML={{__html: replaceWithBr()}}
+                  className="font-light pt-2 w-full"></p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
                 <p>

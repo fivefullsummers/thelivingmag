@@ -44,7 +44,6 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
       postModal.onOpen();
     }
 
-    //Open Post Modal
   }, [currentUser, loginModal, postModal, roleModal]);
 
   useEffect(() => {
@@ -133,7 +132,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             {currentUser ? (
               <>
                 <MenuItem
-                  onClick={() => toggleOpen}
+                  onClick={toggleOpen}
                   label="My Profile"
                   route={`/profile/${currentUser.id}`}
                   isLink={true}

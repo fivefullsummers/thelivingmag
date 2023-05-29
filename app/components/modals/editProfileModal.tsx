@@ -1,7 +1,7 @@
 "use client";
 
 import Modal from "./modal";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../inputs/input";
 import { SafeUser } from "../../types";
@@ -123,7 +123,16 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           errors={errors}
           required
         />
-        <Input id="bio" label={"Bio"} register={register} errors={errors} />
+        {/* <Input id="bio" label={"Bio"} register={register} errors={errors} /> */}
+        <textarea
+          id="bio"
+          {...register("bio")}
+          className="textarea textarea-bordered rounded-md border-2"
+          placeholder="Bio"
+          rows={2}
+          maxLength={100}
+          wrap="hard"
+          ></textarea>
         <Input id="instagramLink" label={"Instagram username"} register={register} errors={errors} />
         <Input id="behanceLink" label={"Behance username"} register={register} errors={errors} />
         <div className="flex justify-start gap-4">
