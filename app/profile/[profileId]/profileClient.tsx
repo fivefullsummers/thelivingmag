@@ -34,9 +34,9 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
     );
   }
 
-  const replaceWithBr = useCallback(() => {
+  const replaceWithBr = () => {
     return user?.bio?.replace(/\n/g, "<br>") as TrustedHTML;
-  }, [user?.bio]);
+  };
 
   console.log("user: ", user);
   return (
