@@ -127,7 +127,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         <textarea
           id="bio"
           {...register("bio")}
-          className="textarea textarea-bordered rounded-md border-2"
+          className="textarea textarea-bordered rounded-md border-2 text-lg"
           placeholder="Bio"
           rows={5}
           maxLength={100}
