@@ -162,7 +162,7 @@ const RegisterModal = () => {
           font-light
         "
       >
-        <div className="flex flex-row items-center gap-2 justify-center">
+        <div className="flex flex-row items-center gap-2 justify-center whitespace-nowrap">
           <div>Already have an account?</div>
           <div
             onClick={toggle}

@@ -119,7 +119,7 @@ const LoginModal = () => {
           font-light
         "
       >
-        <div className="flex flex-row items-center gap-2 justify-center">
+        <div className="flex flex-row items-center gap-2 justify-center whitespace-nowrap">
           <div>First time using on Wouldaposed?</div>
           <div
             onClick={toggle}
