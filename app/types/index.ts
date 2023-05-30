@@ -34,6 +34,7 @@ export type PostUserAvatar = Omit<
   createdAt: string;
   updatedAt: string;
   user: {
+    name: string | null;
     image: string | null;
     role: string;
   }

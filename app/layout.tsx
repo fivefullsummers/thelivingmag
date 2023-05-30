@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Nunito } from "next/font/google";
+import { nunito } from "./fonts";
 
 import getCurrentUser from "./actions/getCurrentUser";
 
@@ -13,7 +13,6 @@ import RoleModal from "./components/modals/roleModal";
 import EditProfileModal from "./components/modals/editProfileModal";
 import Head from "next/head";
 
-const font = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Wouldaposed",
@@ -31,7 +30,7 @@ export default async function RootLayout({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Head>
-      <body className={font.className}>
+      <body className={nunito.className}>
         <ToasterProvider />
         <SearchModal />
         <LoginModal />

@@ -1,3 +1,4 @@
+import getCurrentUser from "../../actions/getCurrentUser";
 import getPosts from "../../actions/getPosts";
 import getUserById from "../../actions/getUserById";
 import { PostUserAvatar, SafeUser } from "../../types";
@@ -9,7 +10,8 @@ interface IParams {
 }
 
 const ProfilePage = async ({ params }: { params: IParams }) => {
-  const [user, posts] = await Promise.allSettled([
+  const [currentUser, user, posts] = await Promise.allSettled([
+    getCurrentUser(),
     getUserById(params),
     getPosts(params),
   ]).then((responses) => {
@@ -23,7 +25,7 @@ const ProfilePage = async ({ params }: { params: IParams }) => {
     });
   });
 
-  return <ProfileClient user={user as SafeUser | null} posts={posts as PostUserAvatar[]} />;
+  return <ProfileClient user={user as SafeUser | null} posts={posts as PostUserAvatar[]} currentUser={currentUser}/>;
 };
 
 export default ProfilePage;

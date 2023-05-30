@@ -41,6 +41,7 @@ export default async function getPosts(params: IPostParams) {
       include: {
         user: {
           select: {
+            name: true,
             image: true,
             role: true,
           },
@@ -53,6 +54,7 @@ export default async function getPosts(params: IPostParams) {
       createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString(),
       user: {
+        name: post.user.name,
         image: post.user.image,
         role: post.user.role
       }

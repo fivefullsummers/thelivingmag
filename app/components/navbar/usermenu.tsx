@@ -120,7 +120,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             scale: 0.5
           }}
           exit={{
-            scale: 0.5
+            scale: 0
           }}
           transition={{
             type: "spring",

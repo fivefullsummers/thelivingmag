@@ -50,10 +50,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
 
   const images = watch("image");
 
-  useEffect(() => {
-    console.log("modal ran");
-  }, [router])
-
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
@@ -61,15 +57,12 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
       shouldValidate: true,
     });
     if (id === "image") {
-      console.log("avatar image:", value);
       setImagesTracker(value);
     }
-    console.log("id: %s values: ", id, value);
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      console.log("data in edit", data);
 
       await axios
         .put("/api/user", data)
@@ -123,7 +116,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           errors={errors}
           required
         />
-        {/* <Input id="bio" label={"Bio"} register={register} errors={errors} /> */}
         <textarea
           id="bio"
           {...register("bio")}

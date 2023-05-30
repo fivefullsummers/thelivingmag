@@ -15,10 +15,16 @@ import { useCallback } from "react";
 interface IProfileClientProps {
   user: SafeUser | null;
   posts?: PostUserAvatar[];
+  currentUser?: SafeUser | null;
 }
 
-const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
+const ProfileClient: React.FC<IProfileClientProps> = ({
+  user,
+  posts,
+  currentUser,
+}) => {
   const editProfileModal = useEditProfileModal();
+
   if (!user) {
     return (
       <EmptyState
@@ -34,11 +40,12 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
     );
   }
 
+  const isCurrentUser = currentUser?.id === user?.id ? true : false;
+
   const replaceWithBr = () => {
     return user?.bio?.replace(/\n/g, "<br>") as TrustedHTML;
   };
 
-  console.log("user: ", user);
   return (
     <Container>
       <div
@@ -69,9 +76,10 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
                 <p className="font-semibold whitespace-nowrap pt-2">
                   {user?.name}
                 </p>
-                <p 
-                  dangerouslySetInnerHTML={{__html: replaceWithBr()}}
-                  className="font-light text-neutral-900 pt-2 w-full text-sm"></p>
+                <p
+                  dangerouslySetInnerHTML={{ __html: replaceWithBr() }}
+                  className="font-light text-neutral-900 pt-2 w-full text-sm"
+                ></p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
                 <p>
@@ -111,12 +119,14 @@ const ProfileClient: React.FC<IProfileClientProps> = ({ user, posts }) => {
               </div>
             </div>
             <div className="card-actions flex justify-end">
-              <button
-                className="btn-sm btn-primary rounded-md"
-                onClick={editProfileModal.onOpen}
-              >
-                Edit profile
-              </button>
+              {isCurrentUser && (
+                <button
+                  className="btn-sm btn-primary rounded-md"
+                  onClick={editProfileModal.onOpen}
+                >
+                  Edit profile
+                </button>
+              )}
             </div>
           </div>
         </div>
