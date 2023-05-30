@@ -25,8 +25,8 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
       <div className="flex flex-col gap-2 w-full">
         <motion.div className="card card-compact bg-base-100 overflow-hidden rounded-md shadow-xl">
           <div className="aspect-square">
-            <figure>
-              <Link href={`/posts/${data.id}`}>
+            <Link href={`/posts/${data.id}`}>
+              <figure>
                 <Image
                   fill
                   loading="lazy"
@@ -37,22 +37,24 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
                   src={data.images[0]}
                   className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
                 />
-              </Link>
-            </figure>
-            <div className="flex flex-col opacity-0 group-hover:opacity-100 transition duration-600 ease-in-out">
-              <div
-                style={{ zIndex: 1 }}
-                className="absolute opacity-0 h-full w-full bg-zinc-950 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:opacity-50 transition duration-500 ease-in-out"
-              ></div>
-              <div
-                style={{ zIndex: 1 }}
-                className={`absolute z-2 text-center text-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium text-white ${bodoni.className || "font-serif"}`}
-              >
-                <p className="text-lg">{data.title}</p>
-                <p className="text-sm">by</p>
-                <p className="text-sm">{data.user.name}</p>
+              </figure>
+              <div className="flex flex-col opacity-0 group-hover:opacity-100 transition duration-600 ease-in-out">
+                <div
+                  style={{ zIndex: 1 }}
+                  className="absolute opacity-0 h-full w-full bg-zinc-950 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:opacity-50 transition duration-500 ease-in-out"
+                ></div>
+                <div
+                  style={{ zIndex: 1 }}
+                  className={`absolute z-2 text-center text-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium text-white ${
+                    bodoni.className || "font-serif"
+                  }`}
+                >
+                  <p className="text-lg">{data.title}</p>
+                  <p className="text-sm">by</p>
+                  <p className="text-sm">{data.user.name}</p>
+                </div>
               </div>
-            </div>
+            </Link>
             <div className="card-body">
               <div className="card-actions justify-end">
                 <div style={{ zIndex: 3 }} className="absolute left-3 bottom-3">
