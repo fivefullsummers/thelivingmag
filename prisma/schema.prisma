@@ -11,44 +11,96 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
-  email String? @unique
-  emailVerified DateTime?
-  image String?
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String   @unique
+  emailVerified  DateTime?
+  image          String?
   hashedPassword String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favoriteIds String[] @db.ObjectId
-  bio String?
-  instagramLink String?
-  behanceLink String?
-  gender String?
-  rating Int?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  favoriteIds    String[]  @db.ObjectId
+  bio            String?
+  instagramLink  String?
+  behanceLink    String?
+  gender         String?
+  rating         Int?
 
-  accounts Account[]
-  listings Listing[]
+  accounts     Account[]
+  listings     Listing[]
   reservations Reservation[]
-  posts Post[]
+  posts        Post[]
+
   role Role @default(READER)
+
+  photographer Photographer?
+  FashionModel FashionModel?
+}
+
+model Photographer {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  user    User?     @relation(fields: [id], references: [id])
+  package Package[]
+}
+
+model FashionModel {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  user         User?         @relation(fields: [id], references: [id])
+  package      Package[]
+  Measurements Measurements?
+}
+
+model Measurements {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  fashionModel   FashionModel @relation(fields: [fashionModelId], references: [id])
+  fashionModelId String       @unique @db.ObjectId
+  height         Int?
+  weight         Int?
+  bust           Int?
+  waist          Int?
+  hips           Int?
+}
+
+model Package {
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  info String[]
+
+  userId         String        @db.ObjectId
+  packageRate    PackageRate[]
+  photographer   Photographer? @relation(fields: [photographerId], references: [id])
+  photographerId String?       @db.ObjectId
+  fashionModel   FashionModel? @relation(fields: [fashionModelId], references: [id])
+  fashionModelId String?       @db.ObjectId
+}
+
+model PackageRate {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  hours Int?
+  days  Int?
+  price Float
+  info  String?
+
+  packageId String  @db.ObjectId
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
 }
 
 model Account {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  type String
-  provider String
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
   providerAccountId String
-  refresh_token String? @db.String
-  access_token String? @db.String
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String? @db.String
-  session_state String?
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@unique([provider, providerAccountId])
 }
 
@@ -59,44 +111,44 @@ enum Role {
 }
 
 model Listing {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  description String
-  imageSrc String
-  createdAt DateTime @default(now())
-  category String
-  roomCount Int
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  imageSrc      String
+  createdAt     DateTime @default(now())
+  category      String
+  roomCount     Int
   bathroomCount Int
-  guestCount Int
+  guestCount    Int
   locationValue String?
-  userId String @db.ObjectId
-  price Int
+  userId        String   @db.ObjectId
+  price         Int
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations Reservation[]
 }
 
 model Post {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  caption String?
-  images String[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  caption   String?
+  images    String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId String @db.ObjectId
-  
+  userId    String   @db.ObjectId
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Reservation {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  listingId String @db.ObjectId
-  startDate DateTime
-  endDate DateTime
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  listingId  String   @db.ObjectId
+  startDate  DateTime
+  endDate    DateTime
   totalPrice Int
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
