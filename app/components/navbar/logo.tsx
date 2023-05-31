@@ -1,20 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { bodoni } from "../../fonts";
 
 const Logo = () => {
-  const router = useRouter();
-
   return (
-    <div className="w-full h-5 relative">
-      <Image
-        onClick={() => router.push("/")}
-        className="block cursor-pointer"
-        alt="logo"
-        fill
-        src="/images/logo.png"
-      />
+    <div className="w-full h-5 relative flex justify-center items-center">
+      <Link href="/">
+        <h3 className={`${bodoni.className} textarea-lg font-semibold tracking-widest italic`}>wouldaposed</h3>
+      </Link>
     </div>
   );
 };
