@@ -11,6 +11,7 @@ import { AiFillInstagram } from "react-icons/ai";
 import { FaBehanceSquare } from "react-icons/fa";
 import Link from "next/link";
 import { useCallback } from "react";
+import { IoLocationSharp } from "react-icons/io5";
 
 interface IProfileClientProps {
   user: SafeUser | null;
@@ -42,6 +43,21 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
 
   const isCurrentUser = currentUser?.id === user?.id ? true : false;
 
+  const currentLocationString = () => {
+    let locationStr = "";
+    if (currentUser?.country !== "" || currentUser?.country !== undefined) {
+      if (currentUser?.state !== "" || currentUser?.state !== undefined) {
+        locationStr += `${currentUser?.state}`;
+      }
+      if (currentUser?.city !== "" || currentUser?.city !== undefined) {
+        locationStr += `, ${currentUser?.city}`;
+      }
+    }
+    return locationStr;
+  };
+
+  const hasLocation = currentLocationString() !== "" ? true : false;
+
   const replaceWithBr = () => {
     return user?.bio?.replace(/\n/g, "<br>") as TrustedHTML;
   };
@@ -69,9 +85,9 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
             2xl:w-[30vw]
             "
         >
-          <div className="card shadow-md p-5 rounded-md">
-            <div className="flex flex-row h-full">
-              <div className="flex flex-col h-full min-w-[60%] justify-center pr-4">
+          <div className="card shadow-md p-5 rounded-md bg-neutral-100">
+            <div className="flex flex-row h-full w-full">
+              <div className="flex flex-col h-full min-w-[55%] justify-center pr-4">
                 <Avatar src={user?.image} size="md" />
                 <p className="font-semibold whitespace-nowrap pt-2">
                   {user?.name}
@@ -86,12 +102,19 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
                   <span className="font-semibold">{posts.length}</span> Posts
                 </p>
                 <div className="flex flex-row gap-1 items-center pt-1">
-                  <p className="text-sm">{user?.role.toLowerCase()}</p>
                   <span>
                     {user?.gender === "FEMALE" && <TbGenderFemale />}
                     {user?.gender === "MALE" && <TbGenderMale />}
                   </span>
+                  <p className="text-sm">{user?.role.toLowerCase()}</p>
                 </div>
+                {hasLocation && (
+                  <div className="flex flex-row gap-1 items-center pt-1">
+                    <span>{<IoLocationSharp />}</span>
+                    <p className="text-xs whitespace-nowrap">{currentLocationString()}</p>
+                  </div>
+                )}
+
                 <div className="flex flex-row gap-2 pt-2">
                   {user?.instagramLink && (
                     <div>

@@ -113,7 +113,7 @@ const Modal: React.FC<IModalProps> = ({
               flex
               flex-col
               w-full
-              bg-white
+              bg-base-100
               overflow-auto
               outline-none
               focus:outline-none

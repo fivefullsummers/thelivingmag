@@ -23,7 +23,11 @@ export async function PUT(req: Request) {
     role,
     gender,
     instagramLink,
-    behanceLink } = body;
+    behanceLink,
+    country,
+    state,
+    city
+  } = body;
 
   const userSchema = z.object({
     name: z.string().max(20).nullable(),
@@ -33,7 +37,11 @@ export async function PUT(req: Request) {
     role: Role.optional().nullable(),
     gender: z.string().optional().nullable(),
     instagramLink: z.string().optional().nullable(),
-    behanceLink: z.string().optional().nullable()
+    behanceLink: z.string().optional().nullable(),
+    country: z.string().optional().nullable(),
+    state: z.string().optional().nullable(),
+    city: z.string().optional().nullable()
+
   });
 
     const response = userSchema.safeParse(body);
@@ -51,7 +59,10 @@ export async function PUT(req: Request) {
       role,
       gender,
       instagramLink,
-      behanceLink
+      behanceLink,
+      country,
+      state,
+      city
     };
     const post = await prisma.user.update({
       where: {

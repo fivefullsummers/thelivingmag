@@ -25,6 +25,9 @@ model User {
   behanceLink    String?
   gender         String?
   rating         Int?
+  country        String?
+  state          String?
+  city           String?
 
   accounts     Account[]
   listings     Listing[]

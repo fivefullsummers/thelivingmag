@@ -89,7 +89,8 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             py-1
             px-2
             border-[1px]
-            border-neutral-200
+            bg-base-100
+            border-base-200
             flex
             flex-row
             items-center
@@ -127,7 +128,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             stiffness: 1000,
             damping: 20
           }}
-          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-neutral-100 overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>

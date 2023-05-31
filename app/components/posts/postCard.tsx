@@ -50,7 +50,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
                   }`}
                 >
                   <p className="text-lg">{data.title}</p>
-                  <p className="text-sm">by</p>
+                  <p className="text-sm italic">by</p>
                   <p className="text-sm">{data.user.name}</p>
                 </div>
               </div>
@@ -59,11 +59,9 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
               <div className="card-actions justify-end">
                 <div style={{ zIndex: 3 }} className="absolute left-3 bottom-3">
                   {showUser && (
-                    <Avatar
-                      src={data.user.image}
-                      routeTo={`/profile/${data.userId}`}
-                      isLink={true}
-                    />
+                    <Link href={`/profile/${data.userId}`}>
+                      <Avatar src={data.user.image} />
+                    </Link>
                   )}
                 </div>
               </div>

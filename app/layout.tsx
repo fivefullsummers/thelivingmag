@@ -7,7 +7,6 @@ import Navbar from "./components/navbar/navbar";
 import ToasterProvider from "./providers/toasterProvider";
 import RegisterModal from "./components/modals/registermodal";
 import LoginModal from "./components/modals/loginModal";
-import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
 import RoleModal from "./components/modals/roleModal";
 import EditProfileModal from "./components/modals/editProfileModal";
@@ -26,13 +25,12 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en" className="antialiased" data-theme="pastel">
+    <html lang="en" className="antialiased" data-theme="garden">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Head>
       <body className={nunito.className}>
         <ToasterProvider />
-        <SearchModal />
         <LoginModal />
         <RegisterModal />
         <RoleModal />
