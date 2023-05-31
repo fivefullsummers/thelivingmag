@@ -25,7 +25,7 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en" className="antialiased" data-theme="garden">
+    <html lang="en" className="antialiased" data-theme="light">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Head>
@@ -37,7 +37,7 @@ export default async function RootLayout({
         <EditProfileModal currentUser={currentUser}/>
         <PostModal currentUser={currentUser}/>
         <Navbar currentUser={currentUser} />
-        <div className="pb-20 pt-20">{children}</div>
+        <div className="pb-20 pt-20 bg-base-100">{children}</div>
       </body>
     </html>
   );

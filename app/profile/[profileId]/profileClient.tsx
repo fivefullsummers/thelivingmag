@@ -85,7 +85,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
             2xl:w-[30vw]
             "
         >
-          <div className="card shadow-md p-5 rounded-md bg-neutral-100">
+          <div className="card shadow-md p-5 rounded-md bg-base-100">
             <div className="flex flex-row h-full w-full">
               <div className="flex flex-col h-full min-w-[55%] justify-center pr-4">
                 <Avatar src={user?.image} size="md" />
@@ -94,7 +94,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
                 </p>
                 <p
                   dangerouslySetInnerHTML={{ __html: replaceWithBr() }}
-                  className="font-light text-neutral-900 pt-2 w-full text-sm"
+                  className="font-light pt-2 w-full text-sm"
                 ></p>
               </div>
               <div className="flex flex-col h-full w-full justify-start pr-2">
@@ -144,7 +144,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
             <div className="card-actions flex justify-end">
               {isCurrentUser && (
                 <button
-                  className="btn-sm btn-primary rounded-md"
+                  className="btn btn-sm rounded-md"
                   onClick={editProfileModal.onOpen}
                 >
                   Edit profile

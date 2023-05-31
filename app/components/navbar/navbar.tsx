@@ -17,8 +17,8 @@ const Navbar: React.FC<INavBarProps> = ({ currentUser }) => {
   const segment = useSelectedLayoutSegment();
 
   return (
-    <div className="fixed w-full bg-neutral-100 z-10 shadow-sm">
-      <div className="py-4 border-b-[1px]">
+    <div className="fixed w-full bg-base-100 z-10 shadow-sm">
+      <div className="py-4 border-b-[1px] border-base-200">
         <Container>
           <div className="flex flex-row w-full">
             <div className="flex justify-center items-center min-w-[100px]">

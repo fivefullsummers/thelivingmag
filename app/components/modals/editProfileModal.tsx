@@ -152,7 +152,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
 
   let bodyContent = (
     <div className="flex flex-col gap-3">
-      <h1 className="font-semibold text-neutral-800 text-center">
+      <h1 className="font-semibold text-center">
         upload avatar
       </h1>
       <AvatarUpload
@@ -161,7 +161,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         folderName={customFolderName}
         trackedImage={imagesTracker || (currentUser?.image as string)}
       />
-      <div className="flex flex-col h-full w-full gap-4">
+      <div className="flex flex-col h-full w-full gap-4 pt-1">
         <Input
           id="name"
           label={"Username"}
@@ -183,7 +183,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           style={{
             fontSize:"16px"
           }}
-          className="textarea textarea-bordered rounded-md border-2 leading-6"
+          className="textarea textarea-bordered textarea-neutral-600 focus:textarea-primary rounded-md border-2 border-neutral leading-6"
           placeholder="Bio"
           rows={5}
           maxLength={100}

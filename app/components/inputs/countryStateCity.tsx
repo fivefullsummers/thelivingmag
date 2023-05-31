@@ -128,6 +128,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
   return (
     <>
       <Select
+        menuPlacement="auto"
         placeholder="Country"
         isClearable
         options={countries}
@@ -142,7 +143,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2",
+          control: () => "p-3 border-2 bg-base-100",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
@@ -151,12 +152,13 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           borderRadius: 6,
           colors: {
             ...theme.colors,
-            primary: "black",
+            primary: "base-100",
             primary25: "#ffe4e6",
           },
         })}
       />
       <Select
+        menuPlacement="auto"
         placeholder="State"
         isClearable
         options={states}
@@ -178,6 +180,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
         theme={(theme) => ({
           ...theme,
           borderRadius: 6,
+          backgroundColor: "white",
           colors: {
             ...theme.colors,
             primary: "black",
@@ -186,6 +189,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
         })}
       />
       <Select
+        menuPlacement="auto"
         placeholder="City"
         isClearable
         options={cities}
@@ -206,6 +210,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
         theme={(theme) => ({
           ...theme,
           borderRadius: 6,
+          backgroundColor: "white",
           colors: {
             ...theme.colors,
             primary: "black",

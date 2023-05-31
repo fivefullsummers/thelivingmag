@@ -25,7 +25,7 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
 
   return (
     <Container>
-      <div className="">
+      <div className="bg-base-100">
         <div className="flex flex-col gap-2 justify-center items-center">
           {post.images.map((image, index) => {
             return (

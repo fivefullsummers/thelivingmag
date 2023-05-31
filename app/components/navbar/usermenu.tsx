@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
 import useRoleModal from "../../hooks/useRoleModal";
 import { motion } from "framer-motion";
+import ThemeComponent from "../../theme";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;
@@ -83,6 +84,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
         >
           Upload
         </div>
+        <ThemeComponent />
         <div
           onClick={toggleOpen}
           className="
@@ -90,7 +92,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             px-2
             border-[1px]
             bg-base-100
-            border-base-200
+            border-base-300
             flex
             flex-row
             items-center
@@ -128,7 +130,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             stiffness: 1000,
             damping: 20
           }}
-          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-neutral-100 overflow-hidden right-0 top-12 text-sm">
+          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-base-100 overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
@@ -139,7 +141,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                   isLink={true}
                 />
                 <MenuItem onClick={() => onPost()} label="Upload" />
-                <hr />
+                <hr className="bg-neutral-content"/>
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (

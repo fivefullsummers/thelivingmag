@@ -104,7 +104,6 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
               flex-col
               justify-center
               items-center
-              text-neutral-600
               rounded-full
               "
               >
