@@ -1,5 +1,5 @@
 import countries from "world-countries";
-import { Country, State, City } from "country-state-city";
+import { Country, State, City, IState, ICity } from "country-state-city";
 
 const formattedCountries = countries.map((country) => ({
   value: country.cca2,
@@ -16,12 +16,25 @@ const formattedStates = State.getAllStates().map((state) => ({
 }));
 
 export type StateType = {
-  value?: string;
-  label?: string;
-  latlng?: number[];
+  isoCode?: string;
+  name?: string;
+  latitude?: string;
+  longitude?: string;
 };
 
-const useCountries = () => {
+export type CityType = {
+  isoCode?: string;
+  name?: string;
+  latitude?: string;
+  longitude?: string;
+};
+
+const useCountries: () => {
+  getAll: () => { value: string; label: string; flag: string; latlng: number[]; region: string; }[];
+  getByValue: (value: string | null) => { value: string; label: string; flag: string; latlng: number[]; region: string; } | undefined;
+  getStatesByCountry: (countryCode?: string) => StateType[];
+  getCitiesOfState: (country?: string, state?: string) => CityType[];
+} = () => {
   const getAll = () => formattedCountries;
   const getAllStates = () => formattedStates;
 
@@ -33,10 +46,15 @@ const useCountries = () => {
     return State.getStatesOfCountry(countryCode) as StateType[];
   };
 
+  const getCitiesOfState = (country?: string, state?: string) => {
+    return City.getCitiesOfState(country as string, state as string) as CityType[];
+  }
+
   return {
     getAll,
     getByValue,
     getStatesByCountry,
+    getCitiesOfState
   };
 };
 
