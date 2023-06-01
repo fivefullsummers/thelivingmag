@@ -44,7 +44,6 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
     } else {
       postModal.onOpen();
     }
-
   }, [currentUser, loginModal, postModal, roleModal]);
 
   useEffect(() => {
@@ -63,6 +62,9 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
   return (
     <div className="relative" ref={menuRef}>
       <div className="flex flow-row items-center gap-3">
+        <div className="flex pr-2">
+          <ThemeComponent />
+        </div>
         <div
           onClick={onPost}
           className="
@@ -84,7 +86,6 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
         >
           Upload
         </div>
-        <ThemeComponent />
         <div
           onClick={toggleOpen}
           className="
@@ -102,35 +103,33 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             cursor-pointer
             hover:shadow-md
             transition
-          ">
-          { !isOpen ? 
-          <AiOutlineMenu /> :
-          <AiOutlineClose /> 
-          }
+          "
+        >
+          {!isOpen ? <AiOutlineMenu /> : <AiOutlineClose />}
           <div className="block">
             <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
-      
 
       {isOpen && (
-        <motion.div 
+        <motion.div
           animate={{
-            scale: 1
+            scale: 1,
           }}
           initial={{
-            scale: 0.5
+            scale: 0.5,
           }}
           exit={{
-            scale: 0
+            scale: 0,
           }}
           transition={{
             type: "spring",
             stiffness: 1000,
-            damping: 20
+            damping: 20,
           }}
-          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-base-100 overflow-hidden right-0 top-12 text-sm">
+          className="absolute z-10 rounded-xl shadow-md w-[40vw] md:w-3/4 bg-base-100 overflow-hidden right-0 top-12 text-sm"
+        >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
@@ -141,7 +140,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                   isLink={true}
                 />
                 <MenuItem onClick={() => onPost()} label="Upload" />
-                <hr className="bg-neutral-content"/>
+                <hr className="bg-neutral-content" />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (

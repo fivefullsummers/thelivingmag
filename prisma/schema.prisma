@@ -35,6 +35,7 @@ model User {
   posts        Post[]
 
   role Role @default(READER)
+  theme Theme @default(LIGHT)
 
   photographer Photographer?
   FashionModel FashionModel?
@@ -111,6 +112,11 @@ enum Role {
   READER
   PHOTOGRAPHER
   MODEL
+}
+
+enum Theme {
+  LIGHT
+  DARK
 }
 
 model Listing {

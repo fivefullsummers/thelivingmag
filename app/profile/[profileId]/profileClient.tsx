@@ -85,7 +85,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
             2xl:w-[30vw]
             "
         >
-          <div className="card shadow-md p-5 rounded-md bg-base-100">
+          <div className="card shadow-md p-5 rounded-md bg-base-200">
             <div className="flex flex-row h-full w-full">
               <div className="flex flex-col h-full min-w-[55%] justify-center pr-4">
                 <Avatar src={user?.image} size="md" />
@@ -111,7 +111,7 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
                 {hasLocation && (
                   <div className="flex flex-row gap-1 items-center pt-1">
                     <span>{<IoLocationSharp />}</span>
-                    <p className="text-xs whitespace-nowrap">{currentLocationString()}</p>
+                    <p className="text-xs whitespace-normal">{currentLocationString()}</p>
                   </div>
                 )}
 
