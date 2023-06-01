@@ -45,12 +45,12 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
 
   const currentLocationString = () => {
     let locationStr = "";
-    if (currentUser?.country !== "" || currentUser?.country !== undefined) {
-      if (currentUser?.state !== "" || currentUser?.state !== undefined) {
-        locationStr += `${currentUser?.state}`;
+    if (user?.country !== "" || user?.country !== undefined) {
+      if (user?.state !== "" || user?.state !== undefined) {
+        locationStr += `${user?.state}`;
       }
-      if (currentUser?.city !== "" || currentUser?.city !== undefined) {
-        locationStr += `, ${currentUser?.city}`;
+      if (user?.city !== "" || user?.city !== undefined) {
+        locationStr += `, ${user?.city}`;
       }
     }
     return locationStr;
