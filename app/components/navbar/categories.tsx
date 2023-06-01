@@ -2,112 +2,18 @@
 
 import Container from "../container";
 import CategoryBox from "../categoryBox";
-import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
-import {
-  GiBarn,
-  GiBoatFishing,
-  GiCactus,
-  GiCastle,
-  GiCaveEntrance,
-  GiClothes,
-  GiForestCamp,
-  GiIsland,
-  GiLipstick,
-  GiWindmill,
-} from "react-icons/gi";
-import { FaCameraRetro, FaSkiing } from "react-icons/fa";
-import { IoDiamond } from "react-icons/io5";
-import { BsSnow } from "react-icons/bs";
-import { MdOutlineVilla } from "react-icons/md";
+import { FaCameraRetro } from "react-icons/fa";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IoMdWoman } from "react-icons/io";
 
-export const categories = [
+export const roles = [
   {
-    label: "Beach",
-    icon: TbBeach,
-    description: "This property is close to the beach!",
-  },
-  {
-    label: "Windmills",
-    icon: GiWindmill,
-    description: "This property is has windmills!",
-  },
-  {
-    label: "Modern",
-    icon: MdOutlineVilla,
-    description: "This property is modern!",
-  },
-  {
-    label: "Countryside",
-    icon: TbMountain,
-    description: "This property is in the countryside!",
-  },
-  {
-    label: "Pools",
-    icon: TbPool,
-    description: "This property is has a pool!",
-  },
-  {
-    label: "Islands",
-    icon: GiIsland,
-    description: "This property is on an island!",
-  },
-  {
-    label: "Lake",
-    icon: GiBoatFishing,
-    description: "This property is close to a lake!",
-  },
-  {
-    label: "Skiing",
-    icon: FaSkiing,
-    description: "This property has skiing activities!",
-  },
-  {
-    label: "Castles",
-    icon: GiCastle,
-    description: "This property is in a castle!",
-  },
-  {
-    label: "Camping",
-    icon: GiForestCamp,
-    description: "This property has camping activities!",
-  },
-  {
-    label: "Arctic",
-    icon: BsSnow,
-    description: "This property is in the snow!",
-  },
-  {
-    label: "Cave",
-    icon: GiCaveEntrance,
-    description: "This property is in a cave!",
-  },
-  {
-    label: "Desert",
-    icon: GiCactus,
-    description: "This property is in the desert!",
-  },
-  {
-    label: "Barns",
-    icon: GiBarn,
-    description: "This property is in a barn!",
-  },
-  {
-    label: "Lux",
-    icon: IoDiamond,
-    description: "This property is luxurious!",
-  },
-];
-
-export const newCategories = [
-  {
-    label: "Photographers",
+    label: "Photographer",
     icon: FaCameraRetro,
     description: "Check out some photographers!",
   },
   {
-    label: "Models",
+    label: "Model",
     icon: IoMdWoman,
     description: "Find a model!",
   }
@@ -115,7 +21,7 @@ export const newCategories = [
 
 const Categories = () => {
   const params = useSearchParams();
-  const category = params?.get("category");
+  const role = params?.get("role");
   const pathname = usePathname();
 
   const isMainPage = pathname === "/";
@@ -134,12 +40,11 @@ const Categories = () => {
           overflow-x-auto
         "
       >
-        {newCategories.map((item) => (
+        {roles.map((item) => (
           <CategoryBox
             key={item.label}
             label={item.label}
-            selected={category === item.label}
-            icon={item.icon}
+            selected={role === item.label}
           />
         ))}
       </div>

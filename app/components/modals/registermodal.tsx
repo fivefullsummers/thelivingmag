@@ -18,18 +18,34 @@ const RegisterModal = () => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
+
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
+
+  const password = watch("password");
+
+  const onShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+
+  const onShowConfirmedPassword = () => {
+    setShowConfirmedPassword(!showConfirmedPassword);
+  }
+
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -53,6 +69,7 @@ const RegisterModal = () => {
     registerModal.onClose();
     loginModal.onOpen();
   },[loginModal, registerModal]);
+  
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -62,25 +79,62 @@ const RegisterModal = () => {
         label="Email"
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "invalid email address"
+        }}}
         errors={errors}
         required
       />
       <Input
         id="name"
-        label="Name"
+        label="Username"
         disabled={isLoading}
         register={register}
         errors={errors}
+        extraOptions={{pattern: {
+          value: /^[a-zA-Z0-9_-]+$/,
+          message: "Username can only include letters, numbers, underscores, and hyphens"
+        }}}
         required
       />
       <Input
         id="password"
         label="Password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message: "Password must be at least 8 characters with lowercase, uppercase, digit, and special character."
+        }}}
         errors={errors}
         required
+        viewPassword={showPassword}
+        onShowPassword={onShowPassword}
+      />
+      <Input
+        id="confirmPassword"
+        label="Confirm Password"
+        type={showConfirmedPassword ? "text" : "password"}
+        disabled={isLoading}
+        register={register}
+        extraOptions={{
+          pattern: {
+          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message: "Password must be at least 8 characters with lowercase, uppercase, digit, and special character."
+        },
+        validate: (val: string) => {
+          if (val === password) {
+            return true;
+          }
+          return "Passwords do not match";
+        }
+      }}
+        errors={errors}
+        required
+        viewPassword={showConfirmedPassword}
+        onShowPassword={onShowConfirmedPassword}
       />
     </div>
   );
@@ -108,7 +162,7 @@ const RegisterModal = () => {
           font-light
         "
       >
-        <div className="flex flex-row items-center gap-2 justify-center">
+        <div className="flex flex-row items-center gap-2 justify-center whitespace-nowrap">
           <div>Already have an account?</div>
           <div
             onClick={toggle}
