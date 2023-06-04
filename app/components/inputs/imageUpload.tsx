@@ -97,8 +97,8 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
     folder: `posts/${folderName}`,
     theme: "office",
     defaultSource: "local",
-    maxFileSize: 10,
-    maxImageFileSize: 10,
+    maxFileSize: 10000000,
+    maxImageFileSize: 10000000,
     sources: ["local"],
     resourceType: "image",
     styles: {

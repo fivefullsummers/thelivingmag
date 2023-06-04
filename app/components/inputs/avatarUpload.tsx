@@ -42,7 +42,7 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
     maxFiles: 1,
     folder: `avatars/${folderName}`,
     multiple: false,
-    maxImageFileSize: 5,
+    maxImageFileSize: 10000000,
     theme: "office",
     defaultSource: "local",
     sources: ["local"],
