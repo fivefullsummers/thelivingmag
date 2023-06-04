@@ -8,46 +8,33 @@ interface IUseTheme {
 
 const useTheme = ({ currentUser }: IUseTheme) => {
 
-  const theme = "theme";
-
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const localStorageData =
-      typeof window !== "undefined" ? localStorage.getItem(theme) : null;
-    return localStorageData === "true";
-  });
+  const [isDarkMode, setIsDarkMode] = useState<boolean>();
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem(theme);
-    console.log(localStorageData);
-    if (localStorageData !== null) {
-      setIsDarkMode(localStorageData === "true");
-    }
-  }, [theme]);
+    const localStorageData =
+      typeof window !== "undefined"
+      ? localStorage.getItem("isDarkMode")
+      : "light";
+
+    localStorageData === "dark" ? setIsDarkMode(true) : setIsDarkMode(false);
+  }, [isDarkMode]);
 
   const toggleTheme = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
 
-      let canUpdateUserTheme = currentUser ? true : false;
-
       try {
-        let request;
         if (isDarkMode) {
-          // request = () => axios.delete(`/api/theme/${theme}`);
-          localStorage.setItem(theme, currentUser?.theme || "light");
+          localStorage.setItem("isDarkMode", "light");
         } else {
-          // request = () => axios.post(`/api/favorites/${theme}`);
-          localStorage.setItem(theme, currentUser?.theme || "dark");
+          localStorage.setItem("isDarkMode", "dark");
         }
-        console.log(isDarkMode);
-        setIsDarkMode(!isDarkMode);
-        // await request();
-        console.log(`successfully like post: ${theme}`);
+        setIsDarkMode((mode) => !mode);
       } catch (error) {
-        console.error(`error liking post: ${theme}`);
+        console.error(`error liking post: ${isDarkMode}`);
       }
     },
-    [theme, currentUser, isDarkMode]
+    [isDarkMode, currentUser, isDarkMode]
   );
 
   return { isDarkMode, toggleTheme };
