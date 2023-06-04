@@ -51,6 +51,7 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
                   sizes="(max-width: 768px) 100vw,
                   (max-width: 1200px) 50vw,
                   33vw"
+                  quality={100}
                   height={500}
                   width={500}
                   alt={`Post ${index}`}

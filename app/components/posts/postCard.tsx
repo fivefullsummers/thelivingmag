@@ -33,6 +33,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
                   sizes="(max-width: 768px) 100vw,
                   (max-width: 1200px) 50vw,
                   33vw"
+                  quality={50}
                   alt={data.title}
                   src={data.images[0]}
                   className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
