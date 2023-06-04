@@ -79,7 +79,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
             outline
             outline-1
             outline-neutral-300
-            hover:bg-neutral-100
+            hover:bg-base-200
             transition
             cursor-pointer
           "

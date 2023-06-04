@@ -45,18 +45,18 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
 
   const currentLocationString = () => {
     let locationStr = "";
-    if (user?.country !== "" || user?.country !== undefined) {
-      if (user?.state !== "" || user?.state !== undefined) {
+    if (user?.country !== "" || user?.country !== null) {
+      if (user?.state !== "" || user?.state !== null) {
         locationStr += `${user?.state}`;
       }
-      if (user?.city !== "" || user?.city !== undefined) {
+      if (user?.city !== "" || user?.city !== null) {
         locationStr += `, ${user?.city}`;
       }
     }
     return locationStr;
   };
 
-  const hasLocation = currentLocationString() !== "" ? true : false;
+  const hasLocation = currentLocationString() !== "null, null" ? true : false;
 
   const replaceWithBr = () => {
     return user?.bio?.replace(/\n/g, "<br>") as TrustedHTML;
@@ -102,16 +102,20 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
                   <span className="font-semibold">{posts.length}</span> Posts
                 </p>
                 <div className="flex flex-row gap-1 items-center pt-1">
-                  <span>
-                    {user?.gender === "FEMALE" && <TbGenderFemale />}
-                    {user?.gender === "MALE" && <TbGenderMale />}
-                  </span>
+                  {user?.gender && (
+                    <span>
+                      {user?.gender === "FEMALE" && <TbGenderFemale />}
+                      {user?.gender === "MALE" && <TbGenderMale />}
+                    </span>
+                  )}
                   <p className="text-sm">{user?.role.toLowerCase()}</p>
                 </div>
                 {hasLocation && (
                   <div className="flex flex-row gap-1 items-center pt-1">
                     <span>{<IoLocationSharp />}</span>
-                    <p className="text-xs whitespace-normal">{currentLocationString()}</p>
+                    <p className="text-xs whitespace-normal">
+                      {currentLocationString()}
+                    </p>
                   </div>
                 )}
 

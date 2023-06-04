@@ -11,6 +11,7 @@ import PostModal from "./components/modals/postModal";
 import RoleModal from "./components/modals/roleModal";
 import EditProfileModal from "./components/modals/editProfileModal";
 import Head from "next/head";
+import DeletePostModal from "./components/modals/deletePostModal";
 
 
 export const metadata = {
@@ -34,6 +35,7 @@ export default async function RootLayout({
         <LoginModal />
         <RegisterModal />
         <RoleModal />
+        <DeletePostModal />
         <EditProfileModal currentUser={currentUser}/>
         <PostModal currentUser={currentUser}/>
         <Navbar currentUser={currentUser} />

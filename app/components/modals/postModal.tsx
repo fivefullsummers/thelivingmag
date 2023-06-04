@@ -3,10 +3,7 @@
 import Modal from "./modal";
 import React, {
   useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback,
+  useMemo
 } from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -96,6 +93,7 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
       })
       .finally(() => {
         setIsLoading(false);
+        setImagesTracker([]);
       });
   };
 
@@ -144,14 +142,26 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
           required
         />
         <hr />
-        <Input
+        <textarea
           id="caption"
-          label="caption"
+          {...register("caption", {
+            required: true,
+            maxLength: 150,
+            pattern: {
+              value: /[\p{L}\p{N}\p{Pc}\p{Pd}\p{Pe}\p{Pf}\p{Pi}\p{Po}\p{Ps}\p{Sc}\p{Sk}\p{Sm}\p{So}\p{Zs}\p{Cf}\p{Cs}]+/u,
+              message: 'Invalid caption'
+            } 
+          })}
+          style={{
+            fontSize:"16px"
+          }}
+          className="textarea textarea-neutral-600 focus:textarea-primary rounded-md outline outline-1 outline-base-300 leading-6"
+          placeholder="Caption"
+          rows={5}
+          maxLength={500}
+          wrap="hard"
           disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
+          ></textarea>
       </div>
     );
   }

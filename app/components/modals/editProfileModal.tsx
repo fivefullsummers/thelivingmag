@@ -24,7 +24,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
   const editProfileModal = useEditProfileModal();
   let customFolderName = "sherwin";
   let currentLocationString = () => {
-    let locationStr = "No location set";
+    let locationStr = "";
     if (currentUser?.country !== "" || currentUser?.country !== undefined) {
       locationStr = `${currentUser?.country}`;
       if (currentUser?.state !== "" || currentUser?.state !== undefined) {
@@ -166,6 +166,10 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           id="name"
           label={"Username"}
           register={register}
+          extraOptions={{pattern: {
+            value: /^[a-zA-Z0-9_-]+(?: [a-zA-Z0-9_-]+)*$/,
+            message: "Username can only include letters, numbers, underscores, and hyphens"
+          }}}
           errors={errors}
           required
         />
@@ -173,24 +177,47 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           id="email"
           label={"Email"}
           register={register}
+          extraOptions={{pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "invalid email address"
+          }}}
           disabled={true}
           errors={errors}
           required
         />
         <textarea
           id="bio"
-          {...register("bio")}
+          {...register("bio", {
+            maxLength: 150
+          })}
           style={{
             fontSize:"16px"
           }}
-          className="textarea textarea-bordered textarea-neutral-600 focus:textarea-primary rounded-md border-2 border-neutral leading-6"
+          className="textarea textarea-neutral-600 focus:textarea-primary rounded-md outline outline-1 outline-base-300 leading-6"
           placeholder="Bio"
           rows={5}
-          maxLength={100}
+          maxLength={150}
           wrap="hard"
           ></textarea>
-        <Input id="instagramLink" label={"Instagram username"} register={register} errors={errors} />
-        <Input id="behanceLink" label={"Behance username"} register={register} errors={errors} />
+        <Input 
+          id="instagramLink" 
+          label={"Instagram username"}
+          register={register}
+          extraOptions={{pattern: {
+            value: /^[a-zA-Z0-9_-]+$/,
+            message: "Username can only include letters, numbers, underscores, and hyphens"
+          }}}
+          errors={errors} />
+        <Input
+          id="behanceLink" 
+          label={"Behance username"} 
+          register={register}
+          extraOptions={{pattern: {
+            value: /^[a-zA-Z0-9_-]+$/,
+            message: "Username can only include letters, numbers, underscores, and hyphens"
+          }}}
+          errors={errors}   
+          />
         <div className="flex justify-center gap-4">
           <select
             {...register("role")}

@@ -61,19 +61,19 @@ const Input: React.FC<IInputProps> = ({
           w-full
           input
           input-bordered
-          input-primary
           p-4
           pt-8
-          border-2
-          border-neutral
+          outline
+          outline-1
+          outline-base-300
           font-light
           rounded-md
           transition
           disabled:opacity-70
           disabled:cursor-not-allowed
           ${formatPrice ? "pl-9" : "pl-4"}
-          ${errors[id] ? "border-rose-500" : "border-neutral-content"}
-          ${errors[id] ? "focus:border-rose-500" : "focus:border-base-300"}
+          ${errors[id] && "border-rose-500"}
+          ${errors[id] && "focus:border-rose-500"}
         `}
         />
         <label

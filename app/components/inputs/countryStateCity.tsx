@@ -143,7 +143,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2 bg-base-100",
+          control: () => "p-3 border-2 location-select",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
@@ -173,7 +173,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2",
+          control: () => "p-3 border-2 location-select",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
@@ -203,7 +203,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2",
+          control: () => "p-3 border-2 location-select",
           input: () => "text-lg",
           option: () => "text-lg",
         }}

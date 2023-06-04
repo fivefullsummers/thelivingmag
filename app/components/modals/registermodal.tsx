@@ -93,7 +93,7 @@ const RegisterModal = () => {
         register={register}
         errors={errors}
         extraOptions={{pattern: {
-          value: /^[a-zA-Z0-9_-]+$/,
+          value: /^[a-zA-Z0-9_-]+(?: [a-zA-Z0-9_-]+)*$/,
           message: "Username can only include letters, numbers, underscores, and hyphens"
         }}}
         required

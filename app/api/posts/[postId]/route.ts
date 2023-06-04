@@ -17,7 +17,7 @@ export async function DELETE(
   }
 
   const { postId } = params;
-
+  
   if (!postId || typeof postId !== "string") {
     throw new Error("Invalid Id");
   }
