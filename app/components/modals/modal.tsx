@@ -35,15 +35,12 @@ const Modal: React.FC<IModalProps> = ({
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
-    if (disabled) {
-      return;
-    }
 
     setShowModal(false);
     setTimeout(() => {
       onClose();
     }, 300);
-  }, [disabled, onClose]);
+  }, [onClose]);
 
   const handleSubmit = useCallback(() => {
     if (disabled) {
@@ -116,8 +113,8 @@ const Modal: React.FC<IModalProps> = ({
               flex
               flex-col
               w-full
-              bg-white
-              overflow-scroll
+              bg-base-100
+              overflow-auto
               outline-none
               focus:outline-none
             "

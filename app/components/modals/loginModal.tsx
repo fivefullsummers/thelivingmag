@@ -19,6 +19,7 @@ const LoginModal = () => {
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -30,6 +31,11 @@ const LoginModal = () => {
       password: "",
     },
   });
+
+  const onShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -65,17 +71,27 @@ const LoginModal = () => {
         label="Email"
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "invalid email address"
+        }}}
         errors={errors}
         required
       />
       <Input
         id="password"
         label="Password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         disabled={isLoading}
         register={register}
+        extraOptions={{pattern: {
+          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message: "Password must be at least 8 characters with lowercase, uppercase, digit, and special character."
+        }}}
         errors={errors}
         required
+        viewPassword={showPassword}
+        onShowPassword={onShowPassword}
       />
     </div>
   );
@@ -103,7 +119,7 @@ const LoginModal = () => {
           font-light
         "
       >
-        <div className="flex flex-row items-center gap-2 justify-center">
+        <div className="flex flex-row items-center gap-2 justify-center whitespace-nowrap">
           <div>First time using on Wouldaposed?</div>
           <div
             onClick={toggle}
