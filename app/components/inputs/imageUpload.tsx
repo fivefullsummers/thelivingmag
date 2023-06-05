@@ -2,10 +2,10 @@
 
 import axios from "axios";
 import { CldUploadWidget, CldUploadWidgetPropsOptions } from "next-cloudinary";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
+import Image from "next/image";
 
 declare global {
   var cloudinary: any;

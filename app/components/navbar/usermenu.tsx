@@ -10,11 +10,11 @@ import useLoginModal from "./../../hooks/useLoginModal";
 
 import { signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
-import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
 import useRoleModal from "../../hooks/useRoleModal";
 import { motion } from "framer-motion";
 import ThemeComponent from "../../theme";
+import { useRouter } from "next/navigation";
 
 interface IUserMenuProps {
   currentUser?: SafeUser | null;

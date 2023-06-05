@@ -3,10 +3,10 @@
 import { bodoni } from "../../fonts";
 
 import { PostUserAvatar } from "../../types";
-import Image from "next/image";
 import Avatar from "../avatar";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 interface IPostCardProps {
   data: PostUserAvatar;

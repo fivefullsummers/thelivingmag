@@ -1,6 +1,6 @@
 export { default } from 'next-auth/middleware';
 
-import { NextRequest, NextResponse } from 'next/server.js';
+import { NextRequest, NextResponse } from 'next/server';
 
 type CspDirective = {
   name: string;
@@ -33,7 +33,8 @@ export function generateCspHeaderAndNonce() {
           // - Next.js <NextScript />
           // - other scripts on pages
           `'nonce-${nonce}'`,
-          "'strict-dynamic'"
+          "'strict-dynamic'",
+          "'unsafe-eval'"
         ],
       },
       {
@@ -42,7 +43,6 @@ export function generateCspHeaderAndNonce() {
           "'self'",
           // Allow unsafe inline styles for Next.js injected inline styles
           "'unsafe-inline'",
-          "http://localhost:3000"
         ],
       },
       {
@@ -72,6 +72,7 @@ export function generateCspHeaderAndNonce() {
         values: [
           // Allow iframes for Google reCAPTCHA
           'https://www.google.com/',
+          'https://upload-widget.cloudinary.com/'
         ],
       },
       { name: 'frame-ancestors', values: ["'none'"] },

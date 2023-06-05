@@ -10,7 +10,6 @@ import LoginModal from "./components/modals/loginModal";
 import PostModal from "./components/modals/postModal";
 import RoleModal from "./components/modals/roleModal";
 import EditProfileModal from "./components/modals/editProfileModal";
-import Head from "next/head";
 import DeletePostModal from "./components/modals/deletePostModal";
 
 export const metadata = {
@@ -27,12 +26,6 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
   return (
     <html lang="en" className="antialiased" data-theme="light">
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        />
-      </Head>
       <body className={nunito.className}>
         <ToasterProvider />
         <LoginModal />

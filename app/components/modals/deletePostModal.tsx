@@ -5,9 +5,9 @@ import Modal from "./modal";
 import Heading from "../heading";
 import { toast } from "react-hot-toast";
 import Button from "../button";
-import { useParams, useRouter } from "next/navigation";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
 import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
 
 const DeletePostModal = () => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const DeletePostModal = () => {
       router.refresh();
     })
     
-  },[postId, router]);
+  },[postId, router, deletePostModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">

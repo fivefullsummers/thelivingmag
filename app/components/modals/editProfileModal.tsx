@@ -9,9 +9,9 @@ import useEditProfileModal from "../../hooks/useEditProfileModal";
 import AvatarUpload from "../inputs/avatarUpload";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import CountryStateCity, { CountrySelectValue } from "../inputs/countryStateCity";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 interface IEditProfileModalProps {
   currentUser?: SafeUser | null;

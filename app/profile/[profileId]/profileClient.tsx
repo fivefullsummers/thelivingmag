@@ -9,8 +9,6 @@ import useEditProfileModal from "../../hooks/useEditProfileModal";
 import { PostUserAvatar, SafeUser } from "../../types";
 import { AiFillInstagram } from "react-icons/ai";
 import { FaBehanceSquare } from "react-icons/fa";
-import Link from "next/link";
-import { useCallback } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 
 interface IProfileClientProps {

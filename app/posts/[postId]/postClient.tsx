@@ -3,11 +3,11 @@
 import { Post, User } from "@prisma/client";
 import { SafeUser } from "../../types";
 import Container from "../../components/container";
-import Image from "next/image";
 import { bodoni } from "../../fonts";
 import Button from "../../components/button";
 import { useCallback } from "react";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
+import Image from "next/image";
 
 interface IPostClientProps {
   post: Post & { user: User };
