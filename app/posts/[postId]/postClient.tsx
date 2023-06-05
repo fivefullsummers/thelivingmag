@@ -1,6 +1,6 @@
 "use client";
 
-import { Post } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 import { SafeUser } from "../../types";
 import Container from "../../components/container";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
 
 interface IPostClientProps {
-  post: Post;
+  post: Post & { user: User };
   currentUser?: SafeUser | null;
 }
 
@@ -33,13 +33,14 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
           >
             {post.title}
           </h1>
+          <p className="text-center text-sm">By {post.user.name}</p>
           <p className="text-center">{post.caption}</p>
         </div>
         <div className="flex flex-col gap-2 justify-center items-center">
           {post.images.map((image, index) => {
             return (
               <div
-                key={`post ${index}`}
+                key={`${post.title}-${index}`}
                 className="aspect-auto flex justify-center items-center"
               >
                 <Image
@@ -54,7 +55,7 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
                   quality={100}
                   height={500}
                   width={500}
-                  alt={`Post ${index}`}
+                  alt={`${post.title}-${index}`}
                   src={image}
                 />
               </div>

@@ -8,7 +8,7 @@ interface IParams {
 }
 
 const PostPage = async ({ params } : { params: IParams})=> {
-  const post = await getPostById(params)
+  const post = await getPostById(params);
   const currentUser = await getCurrentUser();
 
   if (!post) {
@@ -16,6 +16,7 @@ const PostPage = async ({ params } : { params: IParams})=> {
       <EmptyState />
     )
   }
+
   return (
     <PostClient
       post={post}

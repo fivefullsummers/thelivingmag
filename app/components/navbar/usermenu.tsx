@@ -140,7 +140,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({ currentUser }) => {
                   isLink={true}
                 />
                 <MenuItem onClick={() => onPost()} label="Upload" />
-                <hr className="bg-neutral-content" />
+                <hr className="bg-base-300" />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (

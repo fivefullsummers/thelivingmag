@@ -13,10 +13,9 @@ import EditProfileModal from "./components/modals/editProfileModal";
 import Head from "next/head";
 import DeletePostModal from "./components/modals/deletePostModal";
 
-
 export const metadata = {
   title: "Wouldaposed",
-  description: "Wouldaposed by fivefullsummers"
+  description: "Wouldaposed by fivefullsummers",
 };
 
 export default async function RootLayout({
@@ -24,11 +23,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   const currentUser = await getCurrentUser();
   return (
     <html lang="en" className="antialiased" data-theme="light">
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
       </Head>
       <body className={nunito.className}>
         <ToasterProvider />
@@ -36,8 +39,8 @@ export default async function RootLayout({
         <RegisterModal />
         <RoleModal />
         <DeletePostModal />
-        <EditProfileModal currentUser={currentUser}/>
-        <PostModal currentUser={currentUser}/>
+        <EditProfileModal currentUser={currentUser} />
+        <PostModal currentUser={currentUser} />
         <Navbar currentUser={currentUser} />
         <div className="pb-20 pt-20 bg-base-100">{children}</div>
       </body>

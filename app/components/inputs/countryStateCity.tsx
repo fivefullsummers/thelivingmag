@@ -143,7 +143,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2 location-select",
+          control: () => "p-3 border-2",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
@@ -152,7 +152,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           borderRadius: 6,
           colors: {
             ...theme.colors,
-            primary: "base-100",
+            primary: "black",
             primary25: "#ffe4e6",
           },
         })}
@@ -173,7 +173,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2 location-select",
+          control: () => "p-3 border-2",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
@@ -203,7 +203,7 @@ const CountryStateCity: React.FC<ICountryStateCityProps> = ({
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2 location-select",
+          control: () => "p-3 border-2",
           input: () => "text-lg",
           option: () => "text-lg",
         }}
