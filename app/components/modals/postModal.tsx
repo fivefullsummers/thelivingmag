@@ -146,7 +146,7 @@ const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
           id="caption"
           {...register("caption", {
             required: true,
-            maxLength: 150,
+            maxLength: 1000,
             pattern: {
               value: /[\p{L}\p{N}\p{Pc}\p{Pd}\p{Pe}\p{Pf}\p{Pi}\p{Po}\p{Ps}\p{Sc}\p{Sk}\p{Sm}\p{So}\p{Zs}\p{Cf}\p{Cs}]+/u,
               message: 'Invalid caption'
