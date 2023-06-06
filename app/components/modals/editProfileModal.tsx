@@ -9,7 +9,9 @@ import useEditProfileModal from "../../hooks/useEditProfileModal";
 import AvatarUpload from "../inputs/avatarUpload";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import CountryStateCity, { CountrySelectValue } from "../inputs/countryStateCity";
+import CountryStateCity, {
+  CountrySelectValue,
+} from "../inputs/countryStateCity";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
@@ -29,26 +31,26 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
       locationStr = `${currentUser?.country}`;
       if (currentUser?.state !== "" || currentUser?.state !== undefined) {
         locationStr += `, ${currentUser?.state}`;
-      } 
+      }
       if (currentUser?.city !== "" || currentUser?.city !== undefined) {
         locationStr += `, ${currentUser?.city}`;
       }
     }
     return locationStr;
-  }
+  };
   if (currentUser) {
     customFolderName = currentUser.id;
   }
 
   const [imagesTracker, setImagesTracker] = useState<string | undefined>();
-  const [latlng, setLatlng] = useState([0.0,0.0]);
+  const [latlng, setLatlng] = useState([0.0, 0.0]);
   const [selectedCity, setSelectedCity] = useState<string>();
   const [selectedState, setSelectedState] = useState<string>();
   const [selectedCountry, setSelectedCountry] = useState<CountrySelectValue>();
 
   const handleLatLngUpdate = (latlngValue: number[]) => {
     setLatlng(latlngValue);
-  }
+  };
 
   const handleCityUpdate = (city: string) => {
     setSelectedCity(city);
@@ -72,9 +74,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
     [latlng]
   );
 
-  useEffect(() => {
-
-  }, )
+  useEffect(() => {});
 
   const {
     register,
@@ -95,7 +95,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
       behanceLink: currentUser?.behanceLink,
       country: currentUser?.country,
       state: currentUser?.state,
-      city: currentUser?.city
+      city: currentUser?.city,
     },
   });
 
@@ -112,15 +112,14 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
     }
   };
 
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const enrichedData: any = {
         ...data,
         country: selectedCountry?.label as string,
         state: selectedState as string,
-        city: selectedCity as string
-      }
+        city: selectedCity as string,
+      };
 
       await axios
         .put("/api/user", enrichedData)
@@ -137,7 +136,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
             behanceLink: enrichedData?.behanceLink,
             country: response?.country,
             state: response?.state,
-            city: response?.city
+            city: response?.city,
           });
           router.refresh();
           editProfileModal.onClose();
@@ -152,9 +151,7 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
 
   let bodyContent = (
     <div className="flex flex-col gap-3">
-      <h1 className="font-semibold text-center">
-        upload avatar
-      </h1>
+      <h1 className="font-semibold text-center">upload avatar</h1>
       <AvatarUpload
         value={images}
         onChange={(value) => setCustomValue("image", value)}
@@ -166,10 +163,13 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           id="name"
           label={"Username"}
           register={register}
-          extraOptions={{pattern: {
-            value: /^[a-zA-Z0-9_-]+(?: [a-zA-Z0-9_-]+)*$/,
-            message: "Username can only include letters, numbers, underscores, and hyphens"
-          }}}
+          extraOptions={{
+            pattern: {
+              value: /^[a-zA-Z0-9_-]+(?: [a-zA-Z0-9_-]+)*$/,
+              message:
+                "Username can only include letters, numbers, underscores, and hyphens",
+            },
+          }}
           errors={errors}
           required
         />
@@ -177,10 +177,12 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           id="email"
           label={"Email"}
           register={register}
-          extraOptions={{pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: "invalid email address"
-          }}}
+          extraOptions={{
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          }}
           disabled={true}
           errors={errors}
           required
@@ -188,36 +190,43 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
         <textarea
           id="bio"
           {...register("bio", {
-            maxLength: 150
+            maxLength: 150,
           })}
           style={{
-            fontSize:"16px"
+            fontSize: "16px",
           }}
           className="textarea textarea-neutral-600 focus:textarea-primary rounded-md outline outline-1 outline-base-300 leading-6"
           placeholder="Bio"
           rows={5}
           maxLength={150}
           wrap="hard"
-          ></textarea>
-        <Input 
-          id="instagramLink" 
+        ></textarea>
+        <Input
+          id="instagramLink"
           label={"Instagram username"}
           register={register}
-          extraOptions={{pattern: {
-            value: /^[a-zA-Z0-9_-]+$/,
-            message: "Username can only include letters, numbers, underscores, and hyphens"
-          }}}
-          errors={errors} />
+          extraOptions={{
+            pattern: {
+              value: /^[a-zA-Z0-9_-]+$/,
+              message:
+                "Username can only include letters, numbers, underscores, and hyphens",
+            },
+          }}
+          errors={errors}
+        />
         <Input
-          id="behanceLink" 
-          label={"Behance username"} 
+          id="behanceLink"
+          label={"Behance username"}
           register={register}
-          extraOptions={{pattern: {
-            value: /^[a-zA-Z0-9_-]+$/,
-            message: "Username can only include letters, numbers, underscores, and hyphens"
-          }}}
-          errors={errors}   
-          />
+          extraOptions={{
+            pattern: {
+              value: /^[a-zA-Z0-9_-]+$/,
+              message:
+                "Username can only include letters, numbers, underscores, and hyphens",
+            },
+          }}
+          errors={errors}
+        />
         <div className="flex justify-center gap-4">
           <select
             {...register("role")}
@@ -244,14 +253,17 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           </select>
         </div>
         <div className="flex flex-col gap-3">
-          {
-            <p className="text-sm text-center">current location: {currentLocationString()}</p>
-          }
+          {currentUser?.country && (
+            <p className="text-sm text-center">
+              current location: {currentLocationString()}
+            </p>
+          )}
           <CountryStateCity
             onLatlngUpdate={handleLatLngUpdate}
             onCityUpdate={handleCityUpdate}
             onCountryUpdate={handleCountryUpdate}
-            onStateUpdate={handleStateUpdate}/>
+            onStateUpdate={handleStateUpdate}
+          />
         </div>
       </div>
     </div>
