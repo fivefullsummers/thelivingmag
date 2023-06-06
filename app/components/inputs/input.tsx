@@ -110,7 +110,7 @@ const Input: React.FC<IInputProps> = ({
                 h-[50%]
                 w-full
                 border-l-2
-              border-neutral-300"
+                border-base-300"
               >
                 {viewPassword ? (
                   <IoMdEye className="fill-neutral-400" size={24} />

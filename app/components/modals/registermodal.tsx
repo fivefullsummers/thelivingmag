@@ -156,7 +156,6 @@ const RegisterModal = () => {
       />
       <div
         className="
-        text-neutral-500 
           text-center
           mt-4
           font-light
@@ -166,7 +165,7 @@ const RegisterModal = () => {
           <div>Already have an account?</div>
           <div
             onClick={toggle}
-            className="text-neutral-800 cursor-pointer hover:underline"
+            className="cursor-pointer hover:underline"
           >
             Log in
           </div>

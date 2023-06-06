@@ -36,7 +36,6 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   const handleUpload = useCallback(
     (result: any) => {
       if (maxUploads > 0) {
-        console.log("result: ", result);
         if (result.event === "success") {
           const imageUrl = result.info.secure_url;
           const publicId = result.info.public_id;

@@ -27,7 +27,6 @@ const AvatarUpload: React.FC<IImageUploadProps> = ({
 
   const handleUpload = useCallback(
     (result: any) => {
-      console.log("result: ", result);
       if (result.event === "success") {
         const imageUrl = result.info.secure_url;
 
