@@ -10,7 +10,7 @@ interface IModalProps {
   title?: string;
   body?: React.ReactElement;
   footer?: React.ReactElement;
-  actionLabel: string;
+  actionLabel?: string;
   disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
@@ -35,15 +35,12 @@ const Modal: React.FC<IModalProps> = ({
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
-    if (disabled) {
-      return;
-    }
 
     setShowModal(false);
     setTimeout(() => {
       onClose();
     }, 300);
-  }, [disabled, onClose]);
+  }, [onClose]);
 
   const handleSubmit = useCallback(() => {
     if (disabled) {
@@ -92,6 +89,7 @@ const Modal: React.FC<IModalProps> = ({
           h-full
           lg:h-auto
           md:h-auto
+     
         "
         >
           {/* content */}
@@ -116,8 +114,8 @@ const Modal: React.FC<IModalProps> = ({
               flex
               flex-col
               w-full
-              bg-white
-              overflow-scroll
+              bg-base-100
+              overflow-auto
               outline-none
               focus:outline-none
             "
@@ -156,7 +154,7 @@ const Modal: React.FC<IModalProps> = ({
                 </div>
               </div>
               {/* body */}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative p-6 flex-auto h-[70vh] overflow-y-auto no-scrollbar">{body}</div>
               {/* footer */}
               <div className="flex flex-col gap-2 p-6">
                 <div className="flex flex-row items-center gap-4 w-full">
@@ -168,12 +166,14 @@ const Modal: React.FC<IModalProps> = ({
                     onClick={handleSecondaryAction}
                   />
                   )}
-              
-                  <Button
-                    disabled={disabled}
-                    label={actionLabel}
-                    onClick={handleSubmit}
-                  />
+                  { actionLabel && (
+                    <Button
+                      disabled={disabled}
+                      label={actionLabel}
+                      onClick={handleSubmit}
+                    />
+                    )
+                  }
                 </div>
                 {footer}
               </div>
