@@ -89,6 +89,7 @@ const Modal: React.FC<IModalProps> = ({
           h-full
           lg:h-auto
           md:h-auto
+     
         "
         >
           {/* content */}
@@ -153,7 +154,7 @@ const Modal: React.FC<IModalProps> = ({
                 </div>
               </div>
               {/* body */}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative p-6 flex-auto h-[70vh] overflow-y-auto no-scrollbar">{body}</div>
               {/* footer */}
               <div className="flex flex-col gap-2 p-6">
                 <div className="flex flex-row items-center gap-4 w-full">

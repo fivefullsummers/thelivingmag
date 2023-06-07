@@ -87,7 +87,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
     defaultValues: {
       image: currentUser?.image,
       name: currentUser?.name,
-      email: currentUser?.email,
       bio: currentUser?.bio,
       role: currentUser?.role,
       gender: currentUser?.gender || "Select gender",
@@ -128,7 +127,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
           reset({
             image: enrichedData?.image,
             name: enrichedData?.name,
-            email: enrichedData?.email,
             bio: enrichedData?.bio,
             role: enrichedData?.role,
             gender: enrichedData?.gender,
@@ -170,20 +168,6 @@ const EditProfileModal: React.FC<IEditProfileModalProps> = ({
                 "Username can only include letters, numbers, underscores, and hyphens",
             },
           }}
-          errors={errors}
-          required
-        />
-        <Input
-          id="email"
-          label={"Email"}
-          register={register}
-          extraOptions={{
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "invalid email address",
-            },
-          }}
-          disabled={true}
           errors={errors}
           required
         />
