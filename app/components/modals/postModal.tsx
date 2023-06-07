@@ -1,7 +1,10 @@
 "use client";
 
 import Modal from "./modal";
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useMemo
+} from "react";
 import Heading from "../heading";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ImageUpload from "../inputs/imageUpload";
@@ -10,10 +13,19 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import usePostModal from "../../hooks/usePostModal";
+import { SafeUser } from "../../types";
 
-const PostModal = () => {
+interface IPostModalProps {
+  currentUser?: SafeUser | null;
+}
+
+const PostModal: React.FC<IPostModalProps> = ({ currentUser }) => {
   const router = useRouter();
   const postModal = usePostModal();
+  let customFolderName = "sherwin";
+  if (currentUser) {
+    customFolderName = currentUser.id;
+  }
 
   enum STEPS {
     IMAGES = 1,
@@ -22,6 +34,7 @@ const PostModal = () => {
 
   const [step, setStep] = useState(STEPS.IMAGES);
   const [isLoading, setIsLoading] = useState(false);
+  const [imagesTracker, setImagesTracker] = useState<string[]>([]);
 
   const {
     register,
@@ -32,7 +45,7 @@ const PostModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      images: [""],
+      images: [] as String[],
       title: "",
       caption: "",
     },
@@ -46,6 +59,9 @@ const PostModal = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
+    if (id === "images") {
+      setImagesTracker([...value]);
+    }
   };
 
   const onBack = () => {
@@ -77,6 +93,7 @@ const PostModal = () => {
       })
       .finally(() => {
         setIsLoading(false);
+        setImagesTracker([]);
       });
   };
 
@@ -85,24 +102,26 @@ const PostModal = () => {
       return "Create";
     }
     return "Next";
-  }, [step]);
+  }, [step, STEPS.CAPTION]);
 
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.IMAGES) {
       return undefined;
     }
     return "Back";
-  }, [step]);
+  }, [step, STEPS.IMAGES]);
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
         title="Add your work!"
-        subtitle="You can upload up to 5 photos."
+        subtitle={`You can upload up to ${(5 - (imagesTracker.length)) * 1} photo(s).`}
       />
       <ImageUpload
         value={images}
         onChange={(value) => setCustomValue("images", value)}
+        folderName={customFolderName}
+        trackedImages={imagesTracker}
       />
     </div>
   );
@@ -123,14 +142,26 @@ const PostModal = () => {
           required
         />
         <hr />
-        <Input
+        <textarea
           id="caption"
-          label="caption"
+          {...register("caption", {
+            required: true,
+            maxLength: 1000,
+            pattern: {
+              value: /[\p{L}\p{N}\p{Pc}\p{Pd}\p{Pe}\p{Pf}\p{Pi}\p{Po}\p{Ps}\p{Sc}\p{Sk}\p{Sm}\p{So}\p{Zs}\p{Cf}\p{Cs}]+/u,
+              message: 'Invalid caption'
+            } 
+          })}
+          style={{
+            fontSize:"16px"
+          }}
+          className="textarea textarea-neutral-600 focus:textarea-primary rounded-md outline outline-1 outline-base-300 leading-6"
+          placeholder="Caption"
+          rows={5}
+          maxLength={500}
+          wrap="hard"
           disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
+          ></textarea>
       </div>
     );
   }
@@ -145,6 +176,7 @@ const PostModal = () => {
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.IMAGES ? undefined : onBack}
       body={bodyContent}
+      disabled={images.length === 0}
     />
   );
 };
