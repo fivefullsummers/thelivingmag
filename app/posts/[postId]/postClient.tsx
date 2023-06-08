@@ -9,6 +9,7 @@ import { useCallback } from "react";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
 import Image from "next/image";
 import Link from "next/link";
+import { CldImage } from "next-cloudinary";
 
 interface IPostClientProps {
   post: Post & { user: User };
@@ -46,18 +47,17 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
                 key={`${post.title}-${index}`}
                 className="aspect-auto flex justify-center items-center"
               >
-                <Image
+                <CldImage
                   style={{
                     objectFit: "contain",
                   }}
                   className="post-image"
                   loading="lazy"
-                  sizes="(max-width: 768px) 100vw,
-                  (max-width: 1200px) 50vw,
-                  33vw"
+                  sizes="100vw"
                   quality={100}
-                  height={500}
-                  width={500}
+                  height={1000}
+                  width={1000}
+                  format="webp"
                   alt={`${post.id}-${index}`}
                   src={image}
                 />

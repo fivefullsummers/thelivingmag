@@ -49,6 +49,7 @@ export function generateCspHeaderAndNonce() {
         name: 'connect-src',
         values: [
           "'self'",
+          "https://res.cloudinary.com/",
           // Allow connecting for API
           process.env.NODE_ENV !== 'production'
             ? 'localhost:8000/'

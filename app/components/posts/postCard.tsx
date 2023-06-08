@@ -7,6 +7,7 @@ import Avatar from "../avatar";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 
 interface IPostCardProps {
   data: PostUserAvatar;
@@ -27,15 +28,18 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
           <div className="aspect-square">
             <Link href={`/posts/${data.id}`}>
               <figure>
-                <Image
+                <CldImage
                   fill
-                  loading="lazy"
+                  alt={data.title}
+                  src={data.images[0]}
                   sizes="(max-width: 768px) 100vw,
                   (max-width: 1200px) 50vw,
                   33vw"
                   quality={50}
-                  alt={data.title}
-                  src={data.images[0]}
+                  crop="limit"
+                  preserveTransformations
+                  format="webp"
+                  gravity="faces"
                   className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
                 />
               </figure>
