@@ -17,7 +17,6 @@ export async function PUT(req: Request) {
   const body = await req.json();
   const { 
     name,
-    email,
     image,
     bio,
     role,
@@ -30,14 +29,12 @@ export async function PUT(req: Request) {
   } = body;
 
   const userSchema = z.object({
-    name: z.string().max(20).nullable(),
-    email: z.string().email().nullable(),
+    name: z.string().trim().toLowerCase().max(20).nullable(),
     image: z.string().optional().nullable(),
-    bio: z.string().max(400).optional().nullable(),
     role: Role.optional().nullable(),
     gender: z.string().optional().nullable(),
-    instagramLink: z.string().optional().nullable(),
-    behanceLink: z.string().optional().nullable(),
+    instagramLink: z.string().trim().optional().nullable(),
+    behanceLink: z.string().trim().optional().nullable(),
     country: z.string().optional().nullable(),
     state: z.string().optional().nullable(),
     city: z.string().optional().nullable()
@@ -53,7 +50,6 @@ export async function PUT(req: Request) {
 
     const postData = {
       name,
-      email,
       image,
       bio,
       role,
@@ -68,7 +64,7 @@ export async function PUT(req: Request) {
       where: {
         id: currentUser.id,
       },
-      data: postData,
+      data: {...postData, bio },
     });
     return NextResponse.json(post, { status: 200 });
 }

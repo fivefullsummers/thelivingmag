@@ -32,7 +32,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
                 <CldImage
                   alt={data.title}
                   src={data.images[0]}
-                  quality={70}
+                  quality={100}
                   width={640}
                   height={640}
                   preserveTransformations
