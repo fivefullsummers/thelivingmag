@@ -1,6 +1,6 @@
 import getCurrentUser from "@/component/app/actions/getCurrentUser";
-import { NextResponse } from "next/server";
 import prisma from "../../../libs/prismadb";
+import { NextResponse } from "next/server";
 
 interface IParams {
   postId?: string;
@@ -17,7 +17,7 @@ export async function DELETE(
   }
 
   const { postId } = params;
-
+  
   if (!postId || typeof postId !== "string") {
     throw new Error("Invalid Id");
   }

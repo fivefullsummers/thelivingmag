@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Nunito } from "next/font/google";
+import { nunito } from "./fonts";
 
 import getCurrentUser from "./actions/getCurrentUser";
 
@@ -7,11 +7,10 @@ import Navbar from "./components/navbar/navbar";
 import ToasterProvider from "./providers/toasterProvider";
 import RegisterModal from "./components/modals/registermodal";
 import LoginModal from "./components/modals/loginModal";
-import RentModal from "./components/modals/rentModal";
-import SearchModal from "./components/modals/searchModal";
 import PostModal from "./components/modals/postModal";
-
-const font = Nunito({ subsets: ["latin"] });
+import RoleModal from "./components/modals/roleModal";
+import EditProfileModal from "./components/modals/editProfileModal";
+import DeletePostModal from "./components/modals/deletePostModal";
 
 export const metadata = {
   title: "Wouldaposed",
@@ -23,18 +22,20 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en">
-      <body className={font.className}>
+    <html lang="en" className="antialiased" data-theme="light">
+      <body className={nunito.className}>
         <ToasterProvider />
-        <RentModal />
-        <SearchModal />
         <LoginModal />
         <RegisterModal />
-        <PostModal />
+        <RoleModal />
+        <DeletePostModal />
+        <EditProfileModal currentUser={currentUser} />
+        <PostModal currentUser={currentUser} />
         <Navbar currentUser={currentUser} />
-        <div className="pb-20 pt-20">{children}</div>
+        <div className="pb-20 pt-20 bg-base-100">{children}</div>
       </body>
     </html>
   );
