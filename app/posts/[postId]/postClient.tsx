@@ -1,38 +1,84 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Post } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 import { SafeUser } from "../../types";
-import useLoginModal from "../../hooks/useLoginModal";
-import { useState } from "react";
 import Container from "../../components/container";
-
+import { bodoni } from "../../fonts";
+import Button from "../../components/button";
+import { useCallback } from "react";
+import useDeletePostModal from "../../hooks/useDeletePostModal";
+import Image from "next/image";
+import Link from "next/link";
+import { CldImage } from "next-cloudinary";
 
 interface IPostClientProps {
-  post: Post
+  post: Post & { user: User };
   currentUser?: SafeUser | null;
 }
 
-const ListingClient: React.FC<IPostClientProps> = ({
-  post,
-  currentUser,
-}) => {
-  const loginModal = useLoginModal();
-  const router = useRouter();
+const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
+  const deletePostModal = useDeletePostModal();
+  const isAuthor = currentUser?.id === post.userId ? true : false;
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  console.log("post Client: ", post);
+  const deletePost = useCallback(() => {
+    deletePostModal.onOpen();
+  }, []);
 
   return (
     <Container>
-      <div className="max-w-screen-lg mx-auto">
-        <div className="flex flex-col gap-6">
-          Post Client
+      <div className="bg-base-100">
+        <div className="flex flex-col gap-2 py-10">
+          <h1
+            className={`text-center font-semibold text-2xl ${
+              bodoni.className || "font-serif"
+            }`}
+          >
+            {post.title}
+          </h1>
+          <p className="text-center text-sm">{'By '}
+          <Link href={`/profile/${post.user.id}`} className="underline">{post.user.name}</Link>
+          </p>
+          <p className="text-center">{post.caption}</p>
         </div>
+        <div className="flex flex-col gap-2 justify-center items-center">
+          {post.images.map((image, index) => {
+            return (
+              <div
+                key={`${post.title}-${index}`}
+                className="aspect-auto flex justify-center items-center"
+              >
+                <CldImage
+                  style={{
+                    objectFit: "contain",
+                  }}
+                  className="post-image"
+                  loading="lazy"
+                  sizes="100vw"
+                  quality={100}
+                  height={1000}
+                  width={1000}
+                  format="webp"
+                  alt={`${post.id}-${index}`}
+                  src={image}
+                />
+              </div>
+            );
+          })}
+        </div>
+        {isAuthor && (
+          <div className="flex flex-col justify-center items-center w-full py-10">
+            <div className="w-[50%]">
+              <Button
+                label="Delete post"
+                onClick={deletePost}
+                outline={true}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </Container>
   );
 };
 
-export default ListingClient;
+export default PostClient;

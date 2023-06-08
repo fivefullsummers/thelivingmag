@@ -12,6 +12,7 @@ interface IHeartButtonProps {
 
 const HeartButton: React.FC<IHeartButtonProps> = React.memo(
   ({ listingId, currentUser }) => {
+    
     const { hasFavorited, toggleFavorite } = useFavorite({
       listingId,
       currentUser,

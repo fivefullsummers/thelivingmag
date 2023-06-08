@@ -23,3 +23,46 @@ body,
   font-size: 16px !important;
   width: 100% !important;
 }
+
+.underline {
+  height: 1px;
+  width: 100%;
+}
+
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  outline: 2px solid #f00;
+}
+
+.location-select {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.post-image {
+  height: revert;
+}
+
+@layer utilities {
+  @variants responsive {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+  }
+}
