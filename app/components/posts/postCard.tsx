@@ -30,11 +30,9 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
             <Link href={`/posts/${data.id}`}>
               <figure>
                 <CldImage
-                  gravity="faces"
-                  crop="thumb"
                   alt={data.title}
                   src={data.images[0]}
-                  quality={80}
+                  quality={70}
                   width={640}
                   height={640}
                   preserveTransformations

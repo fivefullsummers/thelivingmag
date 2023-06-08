@@ -47,8 +47,9 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
           className="
         grid
         grid-cols-1 
-      ">
-          { post.images.map((image, index) => {
+      "
+        >
+          {post.images.map((image, index) => {
             return (
               <div
                 className="
@@ -56,24 +57,20 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
                   group
                 "
                 key={`${post.title}-${index}`}
-                >
-                <div className="flex flex-col w-full">
-                  <div className="w-full h-full relative">
-                    <Suspense fallback={<div>Loading Image..</div>}>
-                      <CldImage
-                        key={`${post.title}-${index}`}
-                        className="post-image h-full w-full"
-                        sizes="100vw"
-                        width={4000}
-                        height={4000}
-                        quality={100}
-                        format="webp"
-                        alt={`${post.id}-${index}`}
-                        src={image}
-                        loading="eager"
-                        unoptimized={true}
-                      />
-                    </Suspense>
+              >
+                <div className="flex flex-col w-full justify-center items-center">
+                  <div className="min-full h-full relative image-container">
+                    <CldImage
+                      fill
+                      key={`${post.title}-${index}`}
+                      className="h-full w-full py-1 image"
+                      sizes="(max-width: 768px) 100vw"
+                      format="webp"
+                      quality={90}
+                      alt={`${post.id}-${index}`}
+                      src={image}
+                      loading="lazy"
+                    />
                   </div>
                 </div>
               </div>

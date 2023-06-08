@@ -67,3 +67,19 @@ body,
     }
   }
 }
+
+.image-container {
+  width: fit-content;
+  max-width: max-contents;
+}
+
+.image-container > div {
+  position: unset !important;
+}
+
+.image-container .image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}
