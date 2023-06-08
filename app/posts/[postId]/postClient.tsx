@@ -5,7 +5,7 @@ import { SafeUser } from "../../types";
 import Container from "../../components/container";
 import { bodoni } from "../../fonts";
 import Button from "../../components/button";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,32 +35,47 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
           >
             {post.title}
           </h1>
-          <p className="text-center text-sm">{'By '}
-          <Link href={`/profile/${post.user.id}`} className="underline">{post.user.name}</Link>
+          <p className="text-center text-sm">
+            {"By "}
+            <Link href={`/profile/${post.user.id}`} className="underline">
+              {post.user.name}
+            </Link>
           </p>
           <p className="text-center">{post.caption}</p>
         </div>
-        <div className="flex flex-col gap-2 justify-center items-center">
-          {post.images.map((image, index) => {
+        <div
+          className="
+        grid
+        grid-cols-1 
+      ">
+          { post.images.map((image, index) => {
             return (
               <div
+                className="
+                  col-span-1
+                  group
+                "
                 key={`${post.title}-${index}`}
-                className="aspect-auto flex justify-center items-center"
-              >
-                <CldImage
-                  style={{
-                    objectFit: "contain",
-                  }}
-                  className="post-image"
-                  loading="lazy"
-                  sizes="100vw"
-                  quality={100}
-                  height={1000}
-                  width={1000}
-                  format="webp"
-                  alt={`${post.id}-${index}`}
-                  src={image}
-                />
+                >
+                <div className="flex flex-col w-full">
+                  <div className="w-full h-full relative">
+                    <Suspense fallback={<div>Loading Image..</div>}>
+                      <CldImage
+                        key={`${post.title}-${index}`}
+                        className="post-image h-full w-full"
+                        sizes="100vw"
+                        width={4000}
+                        height={4000}
+                        quality={100}
+                        format="webp"
+                        alt={`${post.id}-${index}`}
+                        src={image}
+                        loading="eager"
+                        unoptimized={true}
+                      />
+                    </Suspense>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -68,11 +83,7 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
         {isAuthor && (
           <div className="flex flex-col justify-center items-center w-full py-10">
             <div className="w-[50%]">
-              <Button
-                label="Delete post"
-                onClick={deletePost}
-                outline={true}
-              />
+              <Button label="Delete post" onClick={deletePost} outline={true} />
             </div>
           </div>
         )}

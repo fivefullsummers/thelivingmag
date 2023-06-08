@@ -21,26 +21,25 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
         col-span-1
         cursor-pointer
         group
+        aspect-square
         "
     >
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-2 w-full h-full aspect-square">
         <motion.div className="card card-compact bg-base-100 overflow-hidden rounded-md shadow-xl">
           <div className="aspect-square">
             <Link href={`/posts/${data.id}`}>
               <figure>
                 <CldImage
-                  fill
+                  gravity="faces"
+                  crop="thumb"
                   alt={data.title}
                   src={data.images[0]}
-                  sizes="(max-width: 768px) 100vw,
-                  (max-width: 1200px) 50vw,
-                  33vw"
-                  quality={50}
-                  crop="limit"
+                  quality={80}
+                  width={640}
+                  height={640}
                   preserveTransformations
                   format="webp"
-                  gravity="faces"
-                  className="object-cover h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
+                  className="object-cover aspect-square h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
                 />
               </figure>
               <div className="flex flex-col opacity-0 group-hover:opacity-100 transition duration-600 ease-in-out">

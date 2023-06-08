@@ -51,7 +51,8 @@ body,
 }
 
 .post-image {
-  height: revert;
+  /* height: revert; */
+  height: fit-content;
 }
 
 @layer utilities {
