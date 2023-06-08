@@ -8,6 +8,7 @@ import Button from "../../components/button";
 import { useCallback } from "react";
 import useDeletePostModal from "../../hooks/useDeletePostModal";
 import Image from "next/image";
+import Link from "next/link";
 
 interface IPostClientProps {
   post: Post & { user: User };
@@ -33,7 +34,9 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
           >
             {post.title}
           </h1>
-          <p className="text-center text-sm">By {post.user.name}</p>
+          <p className="text-center text-sm">{'By '}
+          <Link href={`/profile/${post.user.id}`} className="underline">{post.user.name}</Link>
+          </p>
           <p className="text-center">{post.caption}</p>
         </div>
         <div className="flex flex-col gap-2 justify-center items-center">
@@ -55,7 +58,7 @@ const PostClient: React.FC<IPostClientProps> = ({ post, currentUser }) => {
                   quality={100}
                   height={500}
                   width={500}
-                  alt={`${post.title}-${index}`}
+                  alt={`${post.id}-${index}`}
                   src={image}
                 />
               </div>

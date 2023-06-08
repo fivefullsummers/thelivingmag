@@ -21,17 +21,20 @@ const CategoryBox: React.FC<ICategoryBoxProps> = ({ label, selected }) => {
       currentQuery = qs.parse(params.toString());
     }
 
-    const updatedQuery: any = {
-      ...currentQuery,
-      role: label,
-    };
+    let updatedQuery: any = {};
 
     if (params?.get("role") === label) {
+      updatedQuery = { ...currentQuery };
       delete updatedQuery.role;
+    } else {
+      updatedQuery = {
+        ...currentQuery,
+        role: label,
+      }
     }
 
     const url = {
-      pathName: "/",
+      pathname: "/",
       query: updatedQuery,
     };
 
