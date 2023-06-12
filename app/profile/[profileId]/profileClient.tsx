@@ -63,18 +63,22 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
               currentUser={currentUser}
               isCurrentUser={isCurrentUser}
             />
-            <ExtraInfo
+            {/* <ExtraInfo
               user={user}
               currentUser={currentUser}
               isCurrentUser={isCurrentUser}
-            />
+            /> */}
           </div>
         </div>
         <main
           className="
             w-full
             grid
-            grid-cols-3
+            sm:grid-cols-1
+            md:grid-cols-3
+            lg:grid-cols-3
+            xl:grid-cols-3
+            2xl:grid-cols-3
             gap-1 
           "
         >
