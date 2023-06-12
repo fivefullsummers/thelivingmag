@@ -20,22 +20,18 @@ export type SafeReservation = Omit<
 
 export type SafeUser = Omit<
   User,
-  "createdAt" | "updatedAt" | "emailVerified"
+  "createdAt" | "updatedAt" | "emailVerified" | "hashedPassword" 
 > & {
   createdAt: string;
   updatedAt: string;
   emailVerified: string | null;
 }
 
-export type PostUserAvatar = Omit<
+export type SafePostUser = Omit<
   Post,
   "createdAt" | "updatedAt"
 > & {
   createdAt: string;
   updatedAt: string;
-  user: {
-    name: string | null;
-    image: string | null;
-    role: string;
-  }
+  user: SafeUser
 }

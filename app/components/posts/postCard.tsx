@@ -1,16 +1,11 @@
-"use client";
-
 import { bodoni } from "../../fonts";
-
-import { PostUserAvatar } from "../../types";
+import { SafePostUser } from "../../types";
 import Avatar from "../avatar";
-import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
-import { CldImage } from "next-cloudinary";
+import ImageClient from "../imageClient";
 
 interface IPostCardProps {
-  data: PostUserAvatar;
+  data: SafePostUser;
   showUser?: boolean;
 }
 
@@ -25,20 +20,11 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
         "
     >
       <div className="flex flex-col gap-2 w-full h-full aspect-square">
-        <motion.div className="card card-compact bg-base-100 overflow-hidden rounded-md shadow-xl">
+        <div className="card card-compact bg-base-100 overflow-hidden rounded-md shadow-xl">
           <div className="aspect-square">
             <Link href={`/posts/${data.id}`}>
               <figure>
-                <CldImage
-                  alt={data.title}
-                  src={data.images[0]}
-                  quality={100}
-                  width={640}
-                  height={640}
-                  preserveTransformations
-                  format="webp"
-                  className="object-cover aspect-square h-full w-full group-hover:scale-105 transition duration-500 ease-in-out"
-                />
+                <ImageClient title={data.title} image={data.images[0]}/>
               </figure>
               <div className="flex flex-col opacity-0 group-hover:opacity-100 transition duration-600 ease-in-out">
                 <div
@@ -69,7 +55,7 @@ const PostCard: React.FC<IPostCardProps> = ({ data, showUser }) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

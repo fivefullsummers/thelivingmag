@@ -1,7 +1,7 @@
 "use client";
 
 import { Post, User } from "@prisma/client";
-import { SafeUser } from "../../types";
+import { SafePostUser, SafeUser } from "../../types";
 import Container from "../../components/container";
 import { bodoni } from "../../fonts";
 import Button from "../../components/button";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 
 interface IPostClientProps {
-  post: Post & { user: User };
+  post: SafePostUser;
   currentUser?: SafeUser | null;
 }
 

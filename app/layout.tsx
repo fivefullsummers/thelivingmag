@@ -25,7 +25,7 @@ export default async function RootLayout({
 
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en" className="antialiased" data-theme="light">
+    <html lang="en" className="antialiased no-scrollbar" data-theme="light">
       <body className={nunito.className}>
         <ToasterProvider />
         <LoginModal />

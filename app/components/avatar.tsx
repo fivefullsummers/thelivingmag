@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface IAvatarProps {
   src?: string | null | undefined;
@@ -34,16 +34,18 @@ const Avatar: React.FC<IAvatarProps> = ({ src, size, isLink, routeTo }) => {
   if (isLink) {
     return (
       <div>
-          <Image
+          <CldImage
             onClick={() => router.push(routeTo as string)}
             className="rounded-full aspect-square"
             height={imageSize}
             width={imageSize}
+            format="webp"
+            quality={100}
             alt="Avatar"
             style={{
               objectFit: "cover",
             }}
-            src={src || "/images/placeholder.png"}
+            src={src || "avatars/placeholder_lwzpw6.png"}
           />
       </div>
     );
@@ -51,15 +53,17 @@ const Avatar: React.FC<IAvatarProps> = ({ src, size, isLink, routeTo }) => {
 
   return (
     <div>
-      <Image
+      <CldImage
         className="rounded-full aspect-square"
         height={imageSize}
         width={imageSize}
         alt="Avatar"
+        format="webp"
+        quality={100}
         style={{
           objectFit: "cover",
         }}
-        src={src || "/images/placeholder.png"}
+        src={src || "avatars/placeholder_lwzpw6.png"}
       />
     </div>
   );

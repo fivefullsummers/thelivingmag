@@ -11,6 +11,29 @@ export default async function getUserById(params: IParams) {
     const user = await prisma.user.findMany({
       where: {
         id: profileId
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        image: true,
+        createdAt: true,
+        updatedAt: true,
+        favoriteIds: true,
+        bio: true,
+        instagramLink: true,
+        behanceLink: true,
+        gender: true,
+        rating: true,
+        country: true,
+        state: true,
+        city: true,
+        posts: true,
+        role: true,
+        theme: true,
+        photographer: true,
+        FashionModel: true,
       }
     });
 

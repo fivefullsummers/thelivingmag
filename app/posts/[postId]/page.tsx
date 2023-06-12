@@ -1,6 +1,7 @@
 import getCurrentUser from "../../actions/getCurrentUser";
 import getPostById from "../../actions/getPostById";
 import EmptyState from "../../components/emptyState";
+import { SafePostUser } from "../../types";
 import PostClient from "./postClient";
 
 interface IParams {
@@ -8,8 +9,18 @@ interface IParams {
 }
 
 const PostPage = async ({ params } : { params: IParams})=> {
-  const post = await getPostById(params);
-  const currentUser = await getCurrentUser();
+  const [postResult, currentUserResult] = await Promise.allSettled([
+    getPostById(params),
+    getCurrentUser(),
+  ]);
+
+  if (postResult.status === "rejected" || currentUserResult.status === "rejected") {
+    // Handle the rejection of one or both promises
+    return <EmptyState />;
+  }
+
+  const post = postResult.status === "fulfilled" ? postResult.value : null;
+  const currentUser = currentUserResult.status === "fulfilled" ? currentUserResult.value : null;
 
   if (!post) {
     return (
@@ -19,7 +30,7 @@ const PostPage = async ({ params } : { params: IParams})=> {
 
   return (
     <PostClient
-      post={post}
+      post={post as SafePostUser}
       currentUser={currentUser}
     />
   );

@@ -1,11 +1,10 @@
 "use client";
 
 import axios from "axios";
-import { CldUploadWidget, CldUploadWidgetPropsOptions } from "next-cloudinary";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { CldImage, CldUploadWidget, CldUploadWidgetPropsOptions } from "next-cloudinary";
+import { useCallback, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { TbPhotoPlus } from "react-icons/tb";
-import Image from "next/image";
 
 declare global {
   var cloudinary: any;
@@ -55,6 +54,16 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
     [onChange, secureUrls.current, maxUploads, trackedImages]
   );
 
+  // instead of removing the image only once it's been deleted
+  // perhaps we can just remove it from the list
+  // then delete it from the cloud once the from has been submitted
+  // I also need to figure out how to delete stray images from cloud
+  // these are images the user may have uploaded but never posted
+  // i could get all posts from db and all posts from cloud..
+  // then add all to a Set to expose the unique values, these would be
+  // images that exist in the cloud but not the db. then delete all 
+  // images that in that Set. The question is when would be appropriate
+  // to perform these tasks. Maybe a cron job that runs once a day for each user?
   const handleDelete = useCallback(
     async (index: number) => {
       if (index >= 0) {
@@ -176,13 +185,13 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
                   key={thumbnail}
                   className="flex flex-col justify-center items-center"
                 >
-                  <Image
+                  <CldImage
                     alt={`Thumbnail ${index}`}
                     height={200}
                     width={200}
+                    format="webp"
                     style={{ objectFit: "contain" }}
                     src={thumbnail}
-                    priority
                   />
                   <button
                     onClick={(e) => {
