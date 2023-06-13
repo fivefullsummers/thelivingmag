@@ -74,7 +74,8 @@ const ProfileClient: React.FC<IProfileClientProps> = ({
           className="
             w-full
             grid
-            sm:grid-cols-1
+            grid-cols-1
+            sm:grid-cols-3
             md:grid-cols-3
             lg:grid-cols-3
             xl:grid-cols-3
